@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-image',
@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ImageComponent implements OnInit {
 
+  @ViewChild("imageCanvas") imageCanvas: ElementRef;
   constructor() { }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit(){
+    console.log('test');
+    let context: CanvasRenderingContext2D = this.imageCanvas.nativeElement.getContext("2d");
+    context.fillStyle = 'blue';
+    context.fillRect(10,10,150,150);
   }
 
 }
