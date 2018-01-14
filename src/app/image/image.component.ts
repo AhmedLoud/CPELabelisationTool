@@ -49,6 +49,21 @@ export class ImageComponent implements OnInit {
     return pos;
   }
 
+  /**
+   * Function drawBoundingBox
+   * ************************
+   * Called to draw the currentBoundingBox in the canvas
+   * @param image background image 
+   * @param context canvasContext
+   */
+  drawBoundingBox(image, context: CanvasRenderingContext2D): void {
+    context.clearRect(0,0,context.canvas.width, context.canvas.height);
+    context.drawImage(image, 0,0);
+    context.strokeStyle = '#FF0000';
+    context.strokeRect(this.currentBoundingBox.x, this.currentBoundingBox.y,
+      this.currentBoundingBox.w, this.currentBoundingBox.h);
+  }
+
   ngAfterViewInit(): void {
     let context: CanvasRenderingContext2D = this.imageCanvas.nativeElement.getContext("2d");
     const randomImage = new Image();
@@ -67,6 +82,8 @@ export class ImageComponent implements OnInit {
           this.isDrawingBoundingBox = true;
           this.currentBoundingBox.x = pos.x;
           this.currentBoundingBox.y = pos.y;
+          this.currentBoundingBox.w = 0;
+          this.currentBoundingBox.h = 0;
         }
 
       });
@@ -87,10 +104,7 @@ export class ImageComponent implements OnInit {
       })
 
       setInterval(() => {
-        context.clearRect(0,0,context.canvas.width, context.canvas.height);
-        context.drawImage(randomImage, 0,0);   
-        context.fillRect(this.currentBoundingBox.x, this.currentBoundingBox.y,
-          this.currentBoundingBox.w, this.currentBoundingBox.h);
+        this.drawBoundingBox(randomImage,context);    
       });
     };
 
