@@ -1,5 +1,5 @@
 <h1>Labels</h1>
-<p>Here is the list of labels available in the image
+<p class="text-muted">Here is the list of labels available in the image
   To labelise the image plese select a category and click
   on the add button.
   When you finish drawing the bounding box arround the element click save
@@ -15,10 +15,14 @@
       <option *ngFor="let label of labels" [ngValue]="label">{{label.name}}</option>
     </select>
   </div>
-  <button *ngIf="isAdding" class="btn btn-success" (click)="onClickSave()">save</button>
-  <button *ngIf="isAdding" class="btn btn-danger" (click)="onClickCancel()">
-    <i class="fa fa-times"></i>
-  </button>
+  <div class="action-buttons" *ngIf="isAdding">
+    <button class="btn btn-success" (click)="onClickSave()">
+      <i class="fa fa-check"></i>
+    </button>
+    <button class="btn btn-danger" (click)="onClickCancel()">
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
 </div>
 <div class="created-bounding-boxs">
   <ul class="bounding-boxs-list list-group">

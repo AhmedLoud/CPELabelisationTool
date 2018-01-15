@@ -1,3 +1,10 @@
+h1 {
+  font-size: 1.6em;
+}
+
+p {
+  font-size: 0.8em;
+}
 .form-inline label, .form-inline select {
   margin-right: 1vw;
 }
@@ -8,4 +15,8 @@
 
 .bounding-boxs-list li {
   cursor: pointer;
+}
+
+.action-buttons {
+  margin-right: 2px;
 }

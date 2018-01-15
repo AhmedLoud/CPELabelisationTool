@@ -7,13 +7,15 @@ import { ImageComponent } from './image/image.component';
 import { LabelisationFormComponent } from './labelisation-form/labelisation-form.component';
 import { LabelService } from './services/label.service';
 import { FormsModule } from '@angular/forms';
+import { NavbarComponent } from './navbar/navbar.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ImageComponent,
-    LabelisationFormComponent
+    LabelisationFormComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
