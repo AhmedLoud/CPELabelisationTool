@@ -17,8 +17,8 @@ export class ImageComponent implements OnInit {
 
   image: ImageToLabelise = {
     id: 1,
-    imageUrl: '../imageTest',
-    imagePath: '../imageTest.png',
+    imageUrl: './assets/imageTest.png',
+    imagePath: './assets/imageTest.png',
     boundingBoxs: []
   };
   currentBoundingBox: BoundingBox;
