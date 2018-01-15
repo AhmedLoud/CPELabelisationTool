@@ -1,4 +1,9 @@
-<h2>Labels</h2>
+<h1>Labels</h1>
+<p>Here is the list of labels available in the image
+  To labelise the image plese select a category and click
+  on the add button.
+  When you finish drawing the bounding box arround the element click save
+</p>
 <div class="form-inline">
   <div class="form-inline" *ngIf="selectedLabel">
     <label for="categories">select category</label>
@@ -12,7 +17,10 @@
   <button *ngIf="isAdding" class="btn btn-success" (click)="onClickSave()">save</button>
 </div>
 <div class="created-bounding-boxs">
-  <ul class="bounding-boxs-list">
-    <li *ngFor="let box of createdBoundingBoxs">{{box.classNumber}} {{box.className}}</li>
+  <ul class="bounding-boxs-list list-group">
+    <li *ngFor="let box of createdBoundingBoxs"
+        class="list-group-item"
+        (click)="onClickBoxItem(box)"
+        [class.active]="isBoxSelected(box)">{{box.className}}</li>
   </ul>
 </div>

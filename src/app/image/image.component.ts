@@ -17,69 +17,26 @@ export class ImageComponent implements OnInit {
 
   image: ImageToLabelise = {
     id: 1,
-    imageUrl: 'https://picsum.photos/500',
+    imageUrl: 'https://picsum.photos/500/?random',
     imagePath: './assets/imageTest.png',
     boundingBoxs: []
   };
   currentBoundingBox: BoundingBox;
   isDrawingBoundingBox: boolean;
   canStartDrawingBoundingBox: boolean = false;
-
+  nextBoundingBoxLocalId: number;
+  
   @ViewChild("imageCanvas") imageCanvas: ElementRef;
   constructor() {
   }
-
+  
   ngOnInit(): void {
-
-  }
-
-  /**
-   * Function getMousePos
-   * **********************
-   * Return the relative coordinate of a mouse event in the HTML canvas
-   * @param event 
-   */
-  getMousePos(event: MouseEvent): MousePos {
-    let rect = this.imageCanvas.nativeElement.getBoundingClientRect();
-    let x = event.clientX - rect.left;
-    let y = event.clientY - rect.top;
-    const pos: MousePos = new MousePos();
-    pos.x = x;
-    pos.y = y;
-    return pos;
-  }
-
-  /**
-   * Function drawBoundingBox
-   * ************************
-   * Called to draw the currentBoundingBox in the canvas
-   * @param image background image 
-   * @param context canvasContext
-   */
-  drawBoundingBoxs(image, context: CanvasRenderingContext2D): void {
-    //clear canvas
-    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     
-    //draw image to labelise
-    context.drawImage(image, 0, 0);
-
-    //Draw all the bounding boxes associated to the image
-    this.image.boundingBoxs.forEach(box => {
-      context.strokeStyle = box.color;
-      context.strokeRect(box.x, box.y,
-        box.w, box.h);
-    });
-
-    //Draw current bounding box
-    if (this.currentBoundingBox) {
-      context.strokeStyle = this.currentBoundingBox.color;
-      context.strokeRect(this.currentBoundingBox.x, this.currentBoundingBox.y,
-        this.currentBoundingBox.w, this.currentBoundingBox.h);
-    }
   }
-
+  
   ngAfterViewInit(): void {
     let context: CanvasRenderingContext2D = this.imageCanvas.nativeElement.getContext("2d");
+    this.nextBoundingBoxLocalId = 0;
     const randomImage = new Image();
     randomImage.src = this.image.imageUrl;
     randomImage.onload = () => {
@@ -129,12 +86,57 @@ export class ImageComponent implements OnInit {
     };
 
   }
+  
+  /**
+   * Function getMousePos
+   * **********************
+   * Return the relative coordinate of a mouse event in the HTML canvas
+   * @param event 
+   */
+  getMousePos(event: MouseEvent): MousePos {
+    let rect = this.imageCanvas.nativeElement.getBoundingClientRect();
+    let x = event.clientX - rect.left;
+    let y = event.clientY - rect.top;
+    const pos: MousePos = new MousePos();
+    pos.x = x;
+    pos.y = y;
+    return pos;
+  }
 
+  /**
+   * Function drawBoundingBox
+   * ************************
+   * Called to draw the currentBoundingBox in the canvas
+   * @param image background image 
+   * @param context canvasContext
+   */
+  drawBoundingBoxs(image, context: CanvasRenderingContext2D): void {
+    //clear canvas
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+    
+    //draw image to labelise
+    context.drawImage(image, 0, 0);
+
+    //Draw all the bounding boxes associated to the image
+    this.image.boundingBoxs.forEach(box => {
+      context.strokeStyle = box.color;
+      context.strokeRect(box.x, box.y,
+        box.w, box.h);
+    });
+
+    //Draw current bounding box
+    if (this.currentBoundingBox) {
+      context.strokeStyle = this.currentBoundingBox.color;
+      context.strokeRect(this.currentBoundingBox.x, this.currentBoundingBox.y,
+        this.currentBoundingBox.w, this.currentBoundingBox.h);
+    }
+  }
+
+  
   startDrawingBoundingBox(label: Label): void {
     this.canStartDrawingBoundingBox = true;
-    this.currentBoundingBox = new BoundingBox();
-    this.currentBoundingBox.className = label.name;
-    this.currentBoundingBox.classNumber = label.id;
+    this.nextBoundingBoxLocalId = this.nextBoundingBoxLocalId + 1;
+    this.currentBoundingBox = new BoundingBox(label.id,label.name, this.nextBoundingBoxLocalId);
     this.currentBoundingBox.color = Utilities.getRandomHTMLColor();
   }
 
@@ -142,7 +144,5 @@ export class ImageComponent implements OnInit {
     this.image.boundingBoxs.push(this.currentBoundingBox);
     this.canStartDrawingBoundingBox = false;
   }
-
-
 
 }

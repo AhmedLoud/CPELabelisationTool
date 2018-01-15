@@ -10,6 +10,7 @@ export class LabelisationFormComponent implements OnInit {
   labels: Label[];
   selectedLabel: Label;
   isAdding: boolean;
+  selectedBox: BoundingBox;
   @Input() createdBoundingBoxs: BoundingBox[];
 
   @Output() labelSelected = new EventEmitter();
@@ -36,6 +37,17 @@ export class LabelisationFormComponent implements OnInit {
   onClickSave(): void {
     this.isAdding = false;
     this.save.emit();
+  }
+
+  onClickBoxItem(box: BoundingBox): void {
+    this.selectedBox = box;
+  }
+
+  isBoxSelected(box: BoundingBox): boolean {
+    if (!this.selectedBox) {
+      return false;
+    }
+    return box.localId == this.selectedBox.localId;
   }
 
 

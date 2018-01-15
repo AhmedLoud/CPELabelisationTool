@@ -1,3 +1,7 @@
 .form-inline label, .form-inline select {
   margin-right: 1vw;
 }
+
+.bounding-boxs-list {
+  margin-top: 10px;
+}

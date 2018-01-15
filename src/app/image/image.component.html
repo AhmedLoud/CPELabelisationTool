@@ -1,6 +1,12 @@
 <div class="container">
-  <canvas #imageCanvas></canvas>
-  <app-labelisation-form (labelSelected)="startDrawingBoundingBox($event)"
-                         (save)="saveDrawnBoundingBox()"
-                         [createdBoundingBoxs]="image.boundingBoxs"></app-labelisation-form>
+  <div class="row">
+    <div class="col">
+      <canvas #imageCanvas></canvas>
+    </div>
+    <div class="col">
+      <app-labelisation-form (labelSelected)="startDrawingBoundingBox($event)"
+                            (save)="saveDrawnBoundingBox()"
+                            [createdBoundingBoxs]="image.boundingBoxs"></app-labelisation-form>
+    </div>
+  </div>
 </div>
