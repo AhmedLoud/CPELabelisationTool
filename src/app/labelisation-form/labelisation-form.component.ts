@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { LabelService } from '../services/label.service';
-import { Label } from '../models/index';
+import { Label, BoundingBox } from '../models/index';
 @Component({
   selector: 'app-labelisation-form',
   templateUrl: './labelisation-form.component.html',
@@ -9,13 +9,15 @@ import { Label } from '../models/index';
 export class LabelisationFormComponent implements OnInit {
   labels: Label[];
   selectedLabel: Label;
-  constructor(private labelService: LabelService) {
-    this.selectedLabel = new Label();
-    this.selectedLabel.id = 0;
-    this.selectedLabel.name = 'NONE';
-   }
+  isAdding: boolean;
+  @Input() createdBoundingBoxs: BoundingBox[];
 
-  ngOnInit() {
+  @Output() labelSelected = new EventEmitter();
+  @Output() save = new EventEmitter();
+  constructor(private labelService: LabelService) {
+  }
+
+  ngOnInit(): void {
     this.getLabels();
   }
 
@@ -23,8 +25,18 @@ export class LabelisationFormComponent implements OnInit {
     this.labelService.getLabels().subscribe(labels => {
       this.labels = labels;
       this.selectedLabel = labels[0];
-      console.log('here', this.labels)
     });
   }
+
+  onClickAdd(): void {
+    this.labelSelected.emit(this.selectedLabel);
+    this.isAdding = true;
+  }
+
+  onClickSave(): void {
+    this.isAdding = false;
+    this.save.emit();
+  }
+
 
 }

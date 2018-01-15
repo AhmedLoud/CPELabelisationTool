@@ -6,4 +6,5 @@ export class BoundingBox {
   y: number;
   w: number;
   h: number;
+  color: string;
 }

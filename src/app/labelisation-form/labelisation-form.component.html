@@ -1,11 +1,18 @@
 <h2>Labels</h2>
 <div class="form-inline">
-  <div class="form-inline">
-    <label for="categories">Categorie</label>
-    <select class="form-control" id="categories" [(ngModel)]="selectedLabel.name">
-      <option *ngFor="let label of labels">{{label.name}}</option>
+  <div class="form-inline" *ngIf="selectedLabel">
+    <label for="categories">select category</label>
+    <select class="form-control" 
+            id="categories" 
+            [(ngModel)]="selectedLabel">
+      <option *ngFor="let label of labels" [ngValue]="label">{{label.name}}</option>
     </select>
   </div>
-  <button class="btn btn-dark">add</button>
-
+  <button *ngIf="!isAdding" class="btn btn-dark" (click)="onClickAdd()">add</button>
+  <button *ngIf="isAdding" class="btn btn-success" (click)="onClickSave()">save</button>
+</div>
+<div class="created-bounding-boxs">
+  <ul class="bounding-boxs-list">
+    <li *ngFor="let box of createdBoundingBoxs">{{box.classNumber}} {{box.className}}</li>
+  </ul>
 </div>

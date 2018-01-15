@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ImageToLabelise, BoundingBox } from '../models/index'
+import { ImageToLabelise, BoundingBox, Label, Utilities } from '../models/index'
 
 class MousePos {
   x: number;
@@ -17,16 +17,16 @@ export class ImageComponent implements OnInit {
 
   image: ImageToLabelise = {
     id: 1,
-    imageUrl: 'https://source.unsplash.com/random',
-    imagePath: 'https://source.unsplash.com/random',
+    imageUrl: '../imageTest',
+    imagePath: '../imageTest.png',
     boundingBoxs: []
   };
   currentBoundingBox: BoundingBox;
   isDrawingBoundingBox: boolean;
+  canStartDrawingBoundingBox: boolean = false;
 
   @ViewChild("imageCanvas") imageCanvas: ElementRef;
   constructor() {
-    this.currentBoundingBox = new BoundingBox();
   }
 
   ngOnInit(): void {
@@ -56,12 +56,26 @@ export class ImageComponent implements OnInit {
    * @param image background image 
    * @param context canvasContext
    */
-  drawBoundingBox(image, context: CanvasRenderingContext2D): void {
-    context.clearRect(0,0,context.canvas.width, context.canvas.height);
-    context.drawImage(image, 0,0);
-    context.strokeStyle = '#FF0000';
-    context.strokeRect(this.currentBoundingBox.x, this.currentBoundingBox.y,
-      this.currentBoundingBox.w, this.currentBoundingBox.h);
+  drawBoundingBoxs(image, context: CanvasRenderingContext2D): void {
+    //clear canvas
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+    
+    //draw image to labelise
+    context.drawImage(image, 0, 0);
+
+    //Draw all the bounding boxes associated to the image
+    this.image.boundingBoxs.forEach(box => {
+      context.strokeStyle = box.color;
+      context.strokeRect(box.x, box.y,
+        box.w, box.h);
+    });
+
+    //Draw current bounding box
+    if (this.currentBoundingBox) {
+      context.strokeStyle = this.currentBoundingBox.color;
+      context.strokeRect(this.currentBoundingBox.x, this.currentBoundingBox.y,
+        this.currentBoundingBox.w, this.currentBoundingBox.h);
+    }
   }
 
   ngAfterViewInit(): void {
@@ -77,14 +91,18 @@ export class ImageComponent implements OnInit {
       Event Listener when mouse is down on the HTML canvas
        */
       this.imageCanvas.nativeElement.addEventListener('mousedown', (event: MouseEvent) => {
-        if (!this.isDrawingBoundingBox) {
-          const pos = this.getMousePos(event);
-          this.isDrawingBoundingBox = true;
-          this.currentBoundingBox.x = pos.x;
-          this.currentBoundingBox.y = pos.y;
-          this.currentBoundingBox.w = 0;
-          this.currentBoundingBox.h = 0;
-          console.log('(',pos.x,',',pos.y,')');
+        if (this.canStartDrawingBoundingBox) {
+          if (!this.isDrawingBoundingBox) {
+            const pos = this.getMousePos(event);
+            this.isDrawingBoundingBox = true;
+            if (this.currentBoundingBox) {
+              this.currentBoundingBox.x = pos.x;
+              this.currentBoundingBox.y = pos.y;
+              this.currentBoundingBox.w = 0;
+              this.currentBoundingBox.h = 0;
+            }
+            console.log('(', pos.x, ',', pos.y, ')');
+          }
         }
 
       });
@@ -92,23 +110,37 @@ export class ImageComponent implements OnInit {
       this.imageCanvas.nativeElement.addEventListener('mousemove', (event: MouseEvent) => {
         if (this.isDrawingBoundingBox) {
           const pos = this.getMousePos(event);
-          this.currentBoundingBox.w = Math.abs(pos.x - this.currentBoundingBox.x);
-          this.currentBoundingBox.h = Math.abs(pos.y - this.currentBoundingBox.y);
+          if (this.currentBoundingBox) {
+            this.currentBoundingBox.w = Math.abs(pos.x - this.currentBoundingBox.x);
+            this.currentBoundingBox.h = Math.abs(pos.y - this.currentBoundingBox.y);
+          }
         }
       });
 
       this.imageCanvas.nativeElement.addEventListener('mouseup', (event: MouseEvent) => {
         if (this.isDrawingBoundingBox) {
           this.isDrawingBoundingBox = false;
-
         }
       })
 
       setInterval(() => {
-        this.drawBoundingBox(randomImage,context);    
+        this.drawBoundingBoxs(randomImage, context);
       });
     };
 
+  }
+
+  startDrawingBoundingBox(label: Label): void {
+    this.canStartDrawingBoundingBox = true;
+    this.currentBoundingBox = new BoundingBox();
+    this.currentBoundingBox.className = label.name;
+    this.currentBoundingBox.classNumber = label.id;
+    this.currentBoundingBox.color = Utilities.getRandomHTMLColor();
+  }
+
+  saveDrawnBoundingBox(): void {
+    this.image.boundingBoxs.push(this.currentBoundingBox);
+    this.canStartDrawingBoundingBox = false;
   }
 
 
