@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { ImageToLabelise, BoundingBox, Label, Utilities } from '../models/index'
 
 class MousePos {
@@ -25,15 +25,15 @@ export class ImageComponent implements OnInit {
   isDrawingBoundingBox: boolean;
   canStartDrawingBoundingBox: boolean = false;
   nextBoundingBoxLocalId: number;
-  
+
   @ViewChild("imageCanvas") imageCanvas: ElementRef;
   constructor() {
   }
-  
+
   ngOnInit(): void {
-    
+
   }
-  
+
   ngAfterViewInit(): void {
     let context: CanvasRenderingContext2D = this.imageCanvas.nativeElement.getContext("2d");
     this.nextBoundingBoxLocalId = 0;
@@ -74,19 +74,19 @@ export class ImageComponent implements OnInit {
         }
       });
 
-      this.imageCanvas.nativeElement.addEventListener('mouseup', (event: MouseEvent) => {
-        if (this.isDrawingBoundingBox) {
-          this.isDrawingBoundingBox = false;
-        }
-      })
-
       setInterval(() => {
         this.drawBoundingBoxs(randomImage, context);
       });
     };
-
   }
-  
+
+  @HostListener('mouseup', ['$event'])
+  onMouseup() {
+    if (this.isDrawingBoundingBox) {
+      this.isDrawingBoundingBox = false;
+    }
+  }
+
   /**
    * Function getMousePos
    * **********************
@@ -113,7 +113,7 @@ export class ImageComponent implements OnInit {
   drawBoundingBoxs(image, context: CanvasRenderingContext2D): void {
     //clear canvas
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-    
+
     //draw image to labelise
     context.drawImage(image, 0, 0);
 
@@ -132,11 +132,11 @@ export class ImageComponent implements OnInit {
     }
   }
 
-  
+
   startDrawingBoundingBox(label: Label): void {
     this.canStartDrawingBoundingBox = true;
     this.nextBoundingBoxLocalId = this.nextBoundingBoxLocalId + 1;
-    this.currentBoundingBox = new BoundingBox(label.id,label.name, this.nextBoundingBoxLocalId);
+    this.currentBoundingBox = new BoundingBox(label.id, label.name, this.nextBoundingBoxLocalId);
     this.currentBoundingBox.color = Utilities.getRandomHTMLColor();
   }
 

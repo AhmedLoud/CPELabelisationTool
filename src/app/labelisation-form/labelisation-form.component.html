@@ -9,11 +9,12 @@
     <label for="categories">select category</label>
     <select class="form-control" 
             id="categories" 
-            [(ngModel)]="selectedLabel">
+            [(ngModel)]="selectedLabel"
+            (ngModelChange)="onChangeSelectedLabel($event)"
+            [disabled]="isAdding">
       <option *ngFor="let label of labels" [ngValue]="label">{{label.name}}</option>
     </select>
   </div>
-  <button *ngIf="!isAdding" class="btn btn-dark" (click)="onClickAdd()">add</button>
   <button *ngIf="isAdding" class="btn btn-success" (click)="onClickSave()">save</button>
 </div>
 <div class="created-bounding-boxs">

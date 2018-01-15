@@ -29,9 +29,9 @@ export class LabelisationFormComponent implements OnInit {
     });
   }
 
-  onClickAdd(): void {
-    this.labelSelected.emit(this.selectedLabel);
+  onChangeSelectedLabel(label: Label): void {
     this.isAdding = true;
+    this.labelSelected.emit(this.selectedLabel);
   }
 
   onClickSave(): void {
