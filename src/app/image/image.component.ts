@@ -84,6 +84,7 @@ export class ImageComponent implements OnInit {
           this.currentBoundingBox.y = pos.y;
           this.currentBoundingBox.w = 0;
           this.currentBoundingBox.h = 0;
+          console.log('(',pos.x,',',pos.y,')');
         }
 
       });

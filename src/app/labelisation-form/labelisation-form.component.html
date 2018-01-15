@@ -1,0 +1,11 @@
+<h2>Labels</h2>
+<div class="form-inline">
+  <div class="form-inline">
+    <label for="categories">Categorie</label>
+    <select class="form-control" id="categories" [(ngModel)]="selectedLabel.name">
+      <option *ngFor="let label of labels">{{label.name}}</option>
+    </select>
+  </div>
+  <button class="btn btn-dark">add</button>
+
+</div>
