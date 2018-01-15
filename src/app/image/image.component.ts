@@ -127,8 +127,11 @@ export class ImageComponent implements OnInit {
     //Draw current bounding box
     if (this.currentBoundingBox) {
       context.strokeStyle = this.currentBoundingBox.color;
+      context.shadowBlur = 100;
+      context.shadowColor = "blue";
       context.strokeRect(this.currentBoundingBox.x, this.currentBoundingBox.y,
         this.currentBoundingBox.w, this.currentBoundingBox.h);
+    
     }
   }
 
