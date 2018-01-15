@@ -143,6 +143,13 @@ export class ImageComponent implements OnInit {
   saveDrawnBoundingBox(): void {
     this.image.boundingBoxs.push(this.currentBoundingBox);
     this.canStartDrawingBoundingBox = false;
+    this.isDrawingBoundingBox = false;
+  }
+
+  cancelDrawnBoundingBox(): void {
+    this.canStartDrawingBoundingBox = false;
+    this.isDrawingBoundingBox = false;
+    delete this.currentBoundingBox;
   }
 
 }

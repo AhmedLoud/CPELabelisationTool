@@ -5,3 +5,7 @@
 .bounding-boxs-list {
   margin-top: 10px;
 }
+
+.bounding-boxs-list li {
+  cursor: pointer;
+}

@@ -15,6 +15,8 @@ export class LabelisationFormComponent implements OnInit {
 
   @Output() labelSelected = new EventEmitter();
   @Output() save = new EventEmitter();
+  @Output() cancel = new EventEmitter();
+
   constructor(private labelService: LabelService) {
   }
 
@@ -37,6 +39,11 @@ export class LabelisationFormComponent implements OnInit {
   onClickSave(): void {
     this.isAdding = false;
     this.save.emit();
+  }
+
+  onClickCancel(): void {
+    this.isAdding = false;
+    this.cancel.emit();
   }
 
   onClickBoxItem(box: BoundingBox): void {

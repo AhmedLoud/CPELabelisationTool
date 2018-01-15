@@ -16,6 +16,9 @@
     </select>
   </div>
   <button *ngIf="isAdding" class="btn btn-success" (click)="onClickSave()">save</button>
+  <button *ngIf="isAdding" class="btn btn-danger" (click)="onClickCancel()">
+    <i class="fa fa-times"></i>
+  </button>
 </div>
 <div class="created-bounding-boxs">
   <ul class="bounding-boxs-list list-group">
