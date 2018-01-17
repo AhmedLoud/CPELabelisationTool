@@ -10,7 +10,6 @@ export class ImageService {
 
   constructor(private settingsService: SettingsService,
     private http: HttpClient) {
-
   }
 
   getImageToLabelise(): Observable<ImageToLabelise> {
