@@ -15,7 +15,7 @@ export const LABELS: Label[] = [
 
 @Injectable()
 export class LabelService {
-  private backendUrl = 'http://localhost:3000/';
+  private backendUrl = 'http://localhost:3000/ping';
 
   constructor(private http: HttpClient,
      private settingsService: SettingsService) { }

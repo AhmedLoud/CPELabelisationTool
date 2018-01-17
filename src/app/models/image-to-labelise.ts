@@ -1,7 +1,6 @@
 import { BoundingBox } from './index';
 export class ImageToLabelise {
-  id: number;
-  imagePath: string;
+  id: number
   imageUrl: string;
   boundingBoxes: BoundingBox[];
 }

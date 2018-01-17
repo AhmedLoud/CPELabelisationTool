@@ -17,12 +17,7 @@ class MousePos {
 export class ImageComponent implements OnInit {
 
   image: ImageToLabelise;
-  // image: ImageToLabelise = {
-  //   id: 1,
-  //   imageUrl: 'https://picsum.photos/500/?random',
-  //   imagePath: './assets/imageTest.png',
-  //   boundingBoxes: []
-  // };
+
   currentBoundingBox: BoundingBox;
   isDrawingBoundingBox: boolean;
   canStartDrawingBoundingBox: boolean = false;
@@ -89,11 +84,16 @@ export class ImageComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.imageService.getImageToLabelise().subscribe(image => {
-      this.image = image as ImageToLabelise;
+    this.imageService.getImageToLabelise().subscribe((image: ImageToLabelise) => {
+      this.image = image;
       console.log('test', this.image);
       console.log(typeof this.image);
-      this.loadCanvasContext();
+      if(this.image){
+
+        this.loadCanvasContext();
+      }
+    }, (error) => {
+      console.log('error happened');
     });
 
   }
@@ -163,8 +163,8 @@ export class ImageComponent implements OnInit {
     this.nextBoundingBoxLocalId = this.nextBoundingBoxLocalId + 1;
     this.currentBoundingBox = new BoundingBox();
     this.currentBoundingBox.classNumber = label.id;
-    this.currentBoundingBox.className =  label.name;
-    this.currentBoundingBox.id  = this.nextBoundingBoxLocalId;
+    this.currentBoundingBox.className = label.name;
+    this.currentBoundingBox.id = this.nextBoundingBoxLocalId;
     this.currentBoundingBox.color = Utilities.getRandomHTMLColor();
   }
 
