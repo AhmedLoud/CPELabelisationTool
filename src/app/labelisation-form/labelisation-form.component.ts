@@ -11,7 +11,8 @@ export class LabelisationFormComponent implements OnInit {
   selectedLabel: Label;
   isAdding: boolean;
   selectedBox: BoundingBox;
-  @Input() createdBoundingBoxs: BoundingBox[];
+
+  @Input() createdboundingBoxes: BoundingBox[];
 
   @Output() labelSelected = new EventEmitter();
   @Output() save = new EventEmitter();
@@ -22,6 +23,13 @@ export class LabelisationFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.getLabels();
+    this.ping();
+  }
+
+  ping(): void {
+    this.labelService.ping().subscribe(message => {
+      console.log('ping', message);
+    })
   }
 
   getLabels(): void {
@@ -54,7 +62,7 @@ export class LabelisationFormComponent implements OnInit {
     if (!this.selectedBox) {
       return false;
     }
-    return box.localId == this.selectedBox.localId;
+    return box.id == this.selectedBox.id;
   }
 
 

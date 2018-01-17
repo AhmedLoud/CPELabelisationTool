@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Label } from '../models/label';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 export const LABELS: Label[] = [
   { id: 1, name: 'boisson' },
@@ -13,10 +14,15 @@ export const LABELS: Label[] = [
 
 @Injectable()
 export class LabelService {
+  private backendUrl = 'http://localhost:3000/ping';
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   getLabels(): Observable<Label[]> {
     return of(LABELS);
+  }
+
+  ping(): Observable<string> {
+    return this.http.get<string>(this.backendUrl);
   }
 }

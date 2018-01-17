@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { ImageToLabelise, BoundingBox, Label, Utilities } from '../models/index'
+import { ImageService } from '../services/image.service';
 
 class MousePos {
   x: number;
@@ -15,26 +16,33 @@ class MousePos {
 
 export class ImageComponent implements OnInit {
 
-  image: ImageToLabelise = {
-    id: 1,
-    imageUrl: 'https://picsum.photos/500/?random',
-    imagePath: './assets/imageTest.png',
-    boundingBoxs: []
-  };
+  image: ImageToLabelise;
+  // image: ImageToLabelise = {
+  //   id: 1,
+  //   imageUrl: 'https://picsum.photos/500/?random',
+  //   imagePath: './assets/imageTest.png',
+  //   boundingBoxes: []
+  // };
   currentBoundingBox: BoundingBox;
   isDrawingBoundingBox: boolean;
   canStartDrawingBoundingBox: boolean = false;
   nextBoundingBoxLocalId: number;
 
   @ViewChild("imageCanvas") imageCanvas: ElementRef;
-  constructor() {
+  constructor(private imageService: ImageService) {
   }
 
   ngOnInit(): void {
 
   }
 
-  ngAfterViewInit(): void {
+  /**
+   * Function load Canvas Context
+   * *****************************
+   * Load the canvas context and add the needed listener
+   * 
+   */
+  loadCanvasContext(): void {
     let context: CanvasRenderingContext2D = this.imageCanvas.nativeElement.getContext("2d");
     this.nextBoundingBoxLocalId = 0;
     const randomImage = new Image();
@@ -75,9 +83,19 @@ export class ImageComponent implements OnInit {
       });
 
       setInterval(() => {
-        this.drawBoundingBoxs(randomImage, context);
+        this.drawboundingBoxes(randomImage, context);
       });
     };
+  }
+
+  ngAfterViewInit(): void {
+    this.imageService.getImageToLabelise().subscribe(image => {
+      this.image = image as ImageToLabelise;
+      console.log('test', this.image);
+      console.log(typeof this.image);
+      this.loadCanvasContext();
+    });
+
   }
 
   @HostListener('mouseup', ['$event'])
@@ -110,19 +128,23 @@ export class ImageComponent implements OnInit {
    * @param image background image 
    * @param context canvasContext
    */
-  drawBoundingBoxs(image, context: CanvasRenderingContext2D): void {
+  drawboundingBoxes(image, context: CanvasRenderingContext2D): void {
     //clear canvas
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
     //draw image to labelise
     context.drawImage(image, 0, 0);
 
-    //Draw all the bounding boxes associated to the image
-    this.image.boundingBoxs.forEach(box => {
-      context.strokeStyle = box.color;
-      context.strokeRect(box.x, box.y,
-        box.w, box.h);
-    });
+    if (this.image.boundingBoxes) {
+      //Draw all the bounding boxes associated to the image
+      this.image.boundingBoxes.forEach(box => {
+        context.strokeStyle = box.color;
+        context.strokeRect(box.x, box.y,
+          box.w, box.h);
+      });
+    }
+
+
 
     //Draw current bounding box
     if (this.currentBoundingBox) {
@@ -131,7 +153,7 @@ export class ImageComponent implements OnInit {
       context.shadowColor = "blue";
       context.strokeRect(this.currentBoundingBox.x, this.currentBoundingBox.y,
         this.currentBoundingBox.w, this.currentBoundingBox.h);
-    
+
     }
   }
 
@@ -139,12 +161,15 @@ export class ImageComponent implements OnInit {
   startDrawingBoundingBox(label: Label): void {
     this.canStartDrawingBoundingBox = true;
     this.nextBoundingBoxLocalId = this.nextBoundingBoxLocalId + 1;
-    this.currentBoundingBox = new BoundingBox(label.id, label.name, this.nextBoundingBoxLocalId);
+    this.currentBoundingBox = new BoundingBox();
+    this.currentBoundingBox.classNumber = label.id;
+    this.currentBoundingBox.className =  label.name;
+    this.currentBoundingBox.id  = this.nextBoundingBoxLocalId;
     this.currentBoundingBox.color = Utilities.getRandomHTMLColor();
   }
 
   saveDrawnBoundingBox(): void {
-    this.image.boundingBoxs.push(this.currentBoundingBox);
+    this.image.boundingBoxes.push(this.currentBoundingBox);
     this.canStartDrawingBoundingBox = false;
     this.isDrawingBoundingBox = false;
   }

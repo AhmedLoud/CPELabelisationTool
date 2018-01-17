@@ -8,6 +8,9 @@ import { LabelisationFormComponent } from './labelisation-form/labelisation-form
 import { LabelService } from './services/label.service';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from './navbar/navbar.component';
+import { HttpClientModule } from '@angular/common/http';
+import { SettingsService } from './services/settings.service';
+import { ImageService } from './services/image.service';
 
 
 @NgModule({
@@ -19,9 +22,10 @@ import { NavbarComponent } from './navbar/navbar.component';
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [LabelService],
+  providers: [LabelService, SettingsService, ImageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

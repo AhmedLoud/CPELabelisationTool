@@ -4,10 +4,11 @@ export class BoundingBox {
   w: number;
   h: number;
   color: string;
+  classNumber: number;
+  className: string;
+  id: number;
 
-  constructor(public classNumber: number,
-              public className: string,
-              public localId: number){
+  constructor(){
   }
 
 

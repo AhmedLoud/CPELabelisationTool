@@ -4,10 +4,11 @@
       <canvas #imageCanvas></canvas>
     </div>
     <div class="col">
-      <app-labelisation-form (labelSelected)="startDrawingBoundingBox($event)"
-                            (save)="saveDrawnBoundingBox()"
-                            (cancel)="cancelDrawnBoundingBox()"
-                            [createdBoundingBoxs]="image.boundingBoxs"></app-labelisation-form>
+      <app-labelisation-form  *ngIf="image"
+                              (labelSelected)="startDrawingBoundingBox($event)"
+                              (save)="saveDrawnBoundingBox()"
+                              (cancel)="cancelDrawnBoundingBox()"
+                              [createdboundingBoxes]="image.boundingBoxes"></app-labelisation-form>
     </div>
   </div>
 </div>
