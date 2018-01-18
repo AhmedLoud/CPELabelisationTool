@@ -11,7 +11,7 @@ export class BoundingBox {
   constructor() {
   }
 
-  static toJSON(b) {
+  static toJSON(b: BoundingBox) {
     return {
       x: b.x,
       y: b.y,
@@ -19,6 +19,10 @@ export class BoundingBox {
       h: b.h,
       label: b.label
     }
+  }
+
+  static fromJSON(b){
+    
   }
 
 

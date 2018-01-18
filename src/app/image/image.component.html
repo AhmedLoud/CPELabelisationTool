@@ -1,7 +1,8 @@
 <div class="container">
+  <!-- This section is displayed when an image is loaded from the server  -->
   <div class="row">
     <div class="col">
-      <canvas #imageCanvas></canvas>
+      <canvas #imageCanvas [hidden]="!image"></canvas>
     </div>
     <div class="col">
       <app-labelisation-form  *ngIf="image"
@@ -12,4 +13,16 @@
                               (labeliseImage)="onLabeliseImage()"></app-labelisation-form>
     </div>
   </div>
+  <!-- End of This section is displayed when an image is loaded from the server  -->
+
+  <!-- section displayed if the image is not loaded from the server -->
+  <div *ngIf="!image">
+    <div class="text-center">
+      <img *ngIf="!image" class="img-fluid" src="assets/finish.gif"/>
+    </div>
+    <div class="text-center" style="margin-top: 20px">
+      <p class="text-muted">All the images from the dataset are labelised</p>
+    </div>
+  </div>
+   <!-- END OF section displayed if the image is not loaded from the server -->
 </div>

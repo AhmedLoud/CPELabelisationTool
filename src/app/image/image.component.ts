@@ -74,7 +74,7 @@ export class ImageComponent implements OnInit {
   /**
    * Function load Canvas Context
    * *****************************
-   * Load the canvas context and add the needed listener
+   * Load the canvas context
    * 
    */
   loadCanvasContext(): void {
@@ -93,16 +93,17 @@ export class ImageComponent implements OnInit {
     };
   }
 
+
+
   ngAfterViewInit(): void {
     this.imageService.getImageToLabelise().subscribe((image: ImageToLabelise) => {
       this.image = image;
-      console.log('test', this.image);
-      console.log(typeof this.image);
+      this.loadCanvasContext();
       if (this.image) {
-
-        this.loadCanvasContext();
         this.adaptCanvasToLoadedImage();
       }
+
+
     }, (error) => {
       console.log('error happened');
     });
@@ -143,17 +144,20 @@ export class ImageComponent implements OnInit {
     //clear canvas
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
-    //draw image to labelise
-    context.drawImage(image, 0, 0);
 
-    if (this.image.boundingBoxes) {
-      //Draw all the bounding boxes associated to the image
-      this.image.boundingBoxes.forEach(box => {
-        context.strokeStyle = box.color;
-        context.strokeRect(box.x, box.y,
-          box.w, box.h);
-      });
+    if (this.image) {
+      //draw image to labelise
+      context.drawImage(image, 0, 0);
+      if (this.image.boundingBoxes) {
+        //Draw all the bounding boxes associated to the image
+        this.image.boundingBoxes.forEach(box => {
+          context.strokeStyle = box.color;
+          context.strokeRect(box.x, box.y,
+            box.w, box.h);
+        });
+      }
     }
+
 
 
 
@@ -203,4 +207,6 @@ export class ImageComponent implements OnInit {
       });
     })
   }
+
+
 }
