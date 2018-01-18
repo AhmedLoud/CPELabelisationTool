@@ -84,6 +84,7 @@ export class ImageComponent implements OnInit {
 
   adaptCanvasToLoadedImage(): void {
     this.nextBoundingBoxLocalId = 0;
+    this.currentBoundingBox = new BoundingBox();
     this.canvasImage = new Image();
     this.canvasImage.src = this.image.imageUrl;
     this.canvasImage.onload = () => {
@@ -172,8 +173,7 @@ export class ImageComponent implements OnInit {
     this.canStartDrawingBoundingBox = true;
     this.nextBoundingBoxLocalId = this.nextBoundingBoxLocalId + 1;
     this.currentBoundingBox = new BoundingBox();
-    this.currentBoundingBox.classNumber = label.id;
-    this.currentBoundingBox.className = label.name;
+    this.currentBoundingBox.label = label;
     this.currentBoundingBox.id = this.nextBoundingBoxLocalId;
     this.currentBoundingBox.color = Utilities.getRandomHTMLColor();
   }
@@ -191,22 +191,16 @@ export class ImageComponent implements OnInit {
   }
 
   onLabeliseImage(): void {
-    console.log('onLabeliseImages');
     this.imageService.updateImage(this.image).subscribe(response => {
-      console.log(response);
+      this.isDrawingBoundingBox = false;
+      this.imageService.getImageToLabelise().subscribe((image: ImageToLabelise) => {
+        this.image = image;
+
+        if (this.image) {
+          this.adaptCanvasToLoadedImage();
+        }
+      }, (error) => {
+      });
     })
-    this.isDrawingBoundingBox = false;
-    this.imageService.getImageToLabelise().subscribe((image: ImageToLabelise) => {
-      this.image = image;
-      console.log('test', this.image);
-      console.log(typeof this.image);
-      if (this.image) {
-
-        this.adaptCanvasToLoadedImage();
-      }
-    }, (error) => {
-      console.log('error happened');
-    });
   }
-
 }

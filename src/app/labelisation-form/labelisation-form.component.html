@@ -29,7 +29,7 @@
     <li *ngFor="let box of createdboundingBoxes"
         class="list-group-item"
         (click)="onClickBoxItem(box)"
-        [class.active]="isBoxSelected(box)">{{box.className}}</li>
+        [class.active]="isBoxSelected(box)">{{box.label.name}}</li>
   </ul>
 </div>
 

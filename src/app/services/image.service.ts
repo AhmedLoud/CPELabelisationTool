@@ -28,6 +28,6 @@ export class ImageService {
   updateImage(image: ImageToLabelise): Observable<any> {
     const url = this.settingsService.backendApiUrl
       + '/images/' + image.id
-    return this.http.put(url, image, httpOptions);
+    return this.http.put(url, ImageToLabelise.toJSON(image), httpOptions);
   }
 }

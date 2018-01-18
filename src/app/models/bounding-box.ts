@@ -1,16 +1,26 @@
+import { Label } from './index';
 export class BoundingBox {
   x: number;
   y: number;
   w: number;
   h: number;
   color: string;
-  classNumber: number;
-  className: string;
+  label: Label
   id: number;
 
-  constructor(){
+  constructor() {
+  }
+
+  static toJSON(b) {
+    return {
+      x: b.x,
+      y: b.y,
+      w: b.w,
+      h: b.h,
+      label: b.label
+    }
   }
 
 
-  
+
 }
