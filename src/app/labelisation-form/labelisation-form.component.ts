@@ -17,6 +17,7 @@ export class LabelisationFormComponent implements OnInit {
   @Output() labelSelected = new EventEmitter();
   @Output() save = new EventEmitter();
   @Output() cancel = new EventEmitter();
+  @Output() labeliseImage = new EventEmitter();
 
   constructor(private labelService: LabelService) {
   }
@@ -65,5 +66,8 @@ export class LabelisationFormComponent implements OnInit {
     return box.id == this.selectedBox.id;
   }
 
+  onLabeliseImage(): void {
+    this.labeliseImage.emit();
+  }
 
 }

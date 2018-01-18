@@ -8,7 +8,8 @@
                               (labelSelected)="startDrawingBoundingBox($event)"
                               (save)="saveDrawnBoundingBox()"
                               (cancel)="cancelDrawnBoundingBox()"
-                              [createdboundingBoxes]="image.boundingBoxes"></app-labelisation-form>
+                              [createdboundingBoxes]="image.boundingBoxes"
+                              (labeliseImage)="onLabeliseImage()"></app-labelisation-form>
     </div>
   </div>
 </div>

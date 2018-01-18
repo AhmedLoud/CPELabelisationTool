@@ -11,6 +11,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SettingsService } from './services/settings.service';
 import { ImageService } from './services/image.service';
+import { AppRoutingModule } from './/app-routing.module';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { ImageService } from './services/image.service';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AppRoutingModule
   ],
   providers: [LabelService, SettingsService, ImageService],
   bootstrap: [AppComponent]

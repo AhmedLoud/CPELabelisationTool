@@ -32,3 +32,15 @@
         [class.active]="isBoxSelected(box)">{{box.className}}</li>
   </ul>
 </div>
+
+<button class="btn btn-success"
+        disabled="disabled"
+        data-toggle="tooltip"
+        data-placement="right"
+        style="cursor: not-allowed"
+        title="please save current bounding box before labelising"
+        *ngIf="isAdding">Labelise this image</button>
+
+<button class="btn btn-success"
+        *ngIf="!isAdding"
+        (click)="onLabeliseImage()">Labelise this image</button>
