@@ -13,7 +13,9 @@ import { SettingsService } from './services/settings.service';
 import { ImageService } from './services/image.service';
 import { AppRoutingModule } from './/app-routing.module';
 import { AdminComponent } from './admin/admin.component';
-import { TrainingComponent } from './admin/training/training.component';
+import { DarknetTrainingComponent } from './admin/darknet-training/darknet-training.component';
+import { DarknetTrainingDetailComponent } from './admin/darknet-training/darknet-training-detail/darknet-training-detail.component';
+import { DarknetTrainingService } from './services/darknet-training.service';
 
 
 @NgModule({
@@ -23,7 +25,8 @@ import { TrainingComponent } from './admin/training/training.component';
     LabelisationFormComponent,
     NavbarComponent,
     AdminComponent,
-    TrainingComponent
+    DarknetTrainingComponent,
+    DarknetTrainingDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,7 @@ import { TrainingComponent } from './admin/training/training.component';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [LabelService, SettingsService, ImageService],
+  providers: [LabelService, SettingsService, ImageService, DarknetTrainingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
