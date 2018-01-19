@@ -12,6 +12,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { SettingsService } from './services/settings.service';
 import { ImageService } from './services/image.service';
 import { AppRoutingModule } from './/app-routing.module';
+import { AdminComponent } from './admin/admin.component';
+import { TrainingComponent } from './admin/training/training.component';
 
 
 @NgModule({
@@ -19,7 +21,9 @@ import { AppRoutingModule } from './/app-routing.module';
     AppComponent,
     ImageComponent,
     LabelisationFormComponent,
-    NavbarComponent
+    NavbarComponent,
+    AdminComponent,
+    TrainingComponent
   ],
   imports: [
     BrowserModule,
