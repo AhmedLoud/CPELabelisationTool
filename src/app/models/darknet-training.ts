@@ -12,7 +12,7 @@ export class DarknetTraining {
   started_at: Date;
   finished_at: Date;
   labels: Label[];
-  name: string;
+  title: string;
   description: string;
 
 }
