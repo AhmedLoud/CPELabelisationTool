@@ -16,6 +16,7 @@ import { AdminComponent } from './admin/admin.component';
 import { DarknetTrainingComponent } from './admin/darknet-training/darknet-training.component';
 import { DarknetTrainingDetailComponent } from './admin/darknet-training/darknet-training-detail/darknet-training-detail.component';
 import { DarknetTrainingService } from './services/darknet-training.service';
+import { DarknetTrainingCreateComponent } from './admin/darknet-training/darknet-training-create/darknet-training-create.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { DarknetTrainingService } from './services/darknet-training.service';
     NavbarComponent,
     AdminComponent,
     DarknetTrainingComponent,
-    DarknetTrainingDetailComponent
+    DarknetTrainingDetailComponent,
+    DarknetTrainingCreateComponent
   ],
   imports: [
     BrowserModule,

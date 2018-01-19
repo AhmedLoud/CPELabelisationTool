@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-darknet-training-create',
@@ -6,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./darknet-training-create.component.css']
 })
 export class DarknetTrainingCreateComponent implements OnInit {
-
+  title = new FormControl();
+  
   constructor() { }
 
   ngOnInit() {
