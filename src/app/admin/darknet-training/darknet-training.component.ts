@@ -16,11 +16,28 @@ export class DarknetTrainingComponent implements OnInit {
     this.getDarknetTrainings();
   }
 
+  /**
+   * Get the darknet training already existing on the database
+   */
   getDarknetTrainings(): void {
     this.darknetTrainingService.getDarknetTrainings().subscribe(darknetTrainings => {
       this.darknetTrainings = darknetTrainings;
       console.log(this.darknetTrainings);
     });
+  }
+
+  /**
+   * Delete the given darknetTrainingParam from the database 
+   * remove it from the local variables too
+   * @param darknetTraining 
+   */
+  onDeleteDarknetTraining(darknetTraining: DarknetTraining): void {
+    if (confirm("are you sure you want to delete " + darknetTraining.title)) {
+      this.darknetTrainings = this.darknetTrainings.filter(dt => {
+        return dt !== darknetTraining;
+      });
+      this.darknetTrainingService.deleteDarknetTraining(darknetTraining).subscribe();
+    }
   }
 
 }

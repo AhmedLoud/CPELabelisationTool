@@ -29,7 +29,7 @@ export class DarknetTrainingService {
 
   getDarknetTrainings(): Observable<DarknetTraining[]> {
     // return of(TRAININGS);
-    const url = this.settingsService.backendApiUrl + '/darknet_trainings';
+    const url: string = this.settingsService.backendApiUrl + '/darknet_trainings';
     return this.http.get<DarknetTraining[]>(url);
   }
 
@@ -38,9 +38,15 @@ export class DarknetTrainingService {
   }
 
   createDarknetTraining(darknetTraining: DarknetTraining): Observable<any> {
-    const url = this.settingsService.backendApiUrl
+    const url: string = this.settingsService.backendApiUrl
       + '/darknet_trainings';
-    console.log(darknetTraining.labels);
-    return this.http.post(url, darknetTraining, httpOptions);
+    return this.http.post<DarknetTraining>(url,
+      DarknetTraining.toJSON(darknetTraining), httpOptions);
+  }
+
+  deleteDarknetTraining(darknetTraining: DarknetTraining): Observable<any> {
+    const id: number = darknetTraining.id;
+    const url: string = this.settingsService.backendApiUrl + `/darknet_trainings/${id}`;
+    return this.http.delete<DarknetTraining>(url, httpOptions);
   }
 }

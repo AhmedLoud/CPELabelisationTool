@@ -1,4 +1,4 @@
-import { BoundingBox } from './bounding-box';
+\import { BoundingBox } from './bounding-box';
 export class ImageToLabelise {
   id: number
   imageUrl: string;

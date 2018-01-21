@@ -1,8 +1,5 @@
 import { Label } from './index';
 
-interface DarketTrainingJSON {
-
-}
 
 export class DarknetTraining {
   id: number;
@@ -19,6 +16,16 @@ export class DarknetTraining {
     this.title = title;
     this.description = description;
     this.labels = labels;
+  }
+
+  static toJSON(darknetTraining: DarknetTraining) {
+    return {
+      darknet_training: {
+        title: darknetTraining.title,
+        description: darknetTraining.description
+      },
+      labels: darknetTraining.labels
+    }
   }
 }
 

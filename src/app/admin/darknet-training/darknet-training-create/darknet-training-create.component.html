@@ -23,7 +23,9 @@
          <div style="margin-left: 1em;">
           <div class="form-group">
             <label class="center-block">Label:</label>
-            <select class="form-control" formControlName="name">
+            <select class="form-control" 
+                    formControlName="name"
+                    (ngModelChange)="onChangeLabelName($event, i)">
               <option *ngFor="let label of labelOptions" 
                       [value]="label.name">{{label.name}}
               </option>
@@ -31,7 +33,9 @@
           </div>
          </div>
       </div> 
-      <button (click)="addLabel()" type="button">Add a label</button>
+      <button (click)="addLabel()" 
+              type="button"
+              [disabled]="!labelOptions">Add a label</button>
   </div>
 <button type="submit"
         [disabled]="darknetTrainingForm.pristine"

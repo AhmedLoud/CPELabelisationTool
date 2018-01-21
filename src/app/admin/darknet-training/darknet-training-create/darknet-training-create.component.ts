@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Label, DarknetTraining } from '../../../models/index';
 import { LabelService } from '../../../services/label.service';
 import { DarknetTrainingService } from '../../../services/darknet-training.service';
+import { Router } from '@angular/router'
+
 
 @Component({
   selector: 'app-darknet-training-create',
@@ -21,7 +23,8 @@ export class DarknetTrainingCreateComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private labelService: LabelService,
-    private darknetTrainingService: DarknetTrainingService) {
+    private darknetTrainingService: DarknetTrainingService,
+    private router: Router) {
     this.createForm();
   }
 
@@ -89,9 +92,24 @@ export class DarknetTrainingCreateComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('ON SUBMIT')
     this.darknetTraining = this.prepareSaveDarknetTraining();
-    this.darknetTrainingService.createDarknetTraining(this.darknetTraining).subscribe();
+    this.darknetTrainingService.createDarknetTraining(this.darknetTraining)
+      .subscribe((darknetTraining) => {
+        console.log(darknetTraining);
+        this.router.navigateByUrl('/admin/darknet-trainings');
+
+      }, (errors) => {
+        console.log(errors);
+      });
+  }
+
+  onChangeLabelName(labelName: string, formArrayIndex: number) {
+    const labelAssociated = this.labelOptions.find(l => {
+      return l.name == labelName;
+    });
+    console.log(labelAssociated);
+    this.labels.removeAt(formArrayIndex);
+    this.labels.insert(formArrayIndex, this.fb.group(labelAssociated));
   }
 
 }
