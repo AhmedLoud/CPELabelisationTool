@@ -15,4 +15,10 @@ export class DarknetTraining {
   title: string;
   description: string;
 
+  constructor(title: string, description: string, labels: Label[]){
+    this.title = title;
+    this.description = description;
+    this.labels = labels;
+  }
 }
+

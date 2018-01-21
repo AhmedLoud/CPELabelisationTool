@@ -10,7 +10,7 @@ const routes: Routes = [
   {
     path: 'admin', component: AdminComponent,
     children: [
-      { path: 'darknet-training', component: DarknetTrainingComponent },
+      { path: 'darknet-trainings', component: DarknetTrainingComponent },
       { path: 'darknet-training-create', component: DarknetTrainingCreateComponent }
     ]
   }

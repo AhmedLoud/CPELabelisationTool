@@ -16,6 +16,10 @@ const TRAININGS = [
   { id: 8, title: 'first title', description: 'first description' }
 ]
 
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+}
+
 @Injectable()
 export class DarknetTrainingService {
   private backendUrl = 'http://localhost:3000/ping';
@@ -31,5 +35,12 @@ export class DarknetTrainingService {
 
   ping(): Observable<string> {
     return this.http.get<string>(this.backendUrl);
+  }
+
+  createDarknetTraining(darknetTraining: DarknetTraining): Observable<any> {
+    const url = this.settingsService.backendApiUrl
+      + '/darknet_trainings';
+    console.log(darknetTraining.labels);
+    return this.http.post(url, darknetTraining, httpOptions);
   }
 }
