@@ -51,6 +51,16 @@ export class DarknetTrainingCreateComponent implements OnInit {
    * push a default label  to the form array labels
    */
   addLabel(): void {
+    // const usedLabels: Label[] = this.darknetTrainingForm.value.labels.map((label: Label) => {
+    //   return Object.assign({}, label);
+    // });
+    // console.log('used', usedLabels);
+    // console.log('options', this.labelOptions)
+    // this.labelOptions = this.labelOptions.filter(option => {
+    //   return usedLabels.includes(option);
+    // });
+    // console.log(this.labelOptions)
+    //TODO filter and remove already used option :)
     this.labels.push(this.fb.group(this.labelOptions[0]));
   }
 
