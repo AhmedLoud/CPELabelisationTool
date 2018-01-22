@@ -32,6 +32,10 @@ export class DarknetTrainingComponent implements OnInit {
    * @param darknetTraining 
    */
   onDeleteDarknetTraining(darknetTraining: DarknetTraining): void {
+    if (darknetTraining.is_training) {
+      console.error('cannot delete a currently training model');
+      return;
+    }
     if (confirm("are you sure you want to delete " + darknetTraining.title)) {
       this.darknetTrainings = this.darknetTrainings.filter(dt => {
         return dt !== darknetTraining;
