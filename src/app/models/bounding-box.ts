@@ -21,8 +21,22 @@ export class BoundingBox {
     }
   }
 
-  static fromJSON(b){
-    
+  static fromJSON(b) {
+
+  }
+
+  normalize(image_width: number, image_height: number): void {
+    //(x,y) moved to center of bounding box
+    this.x = this.x + (this.w / 2);
+    this.y = this.y + (this.h / 2);
+
+    //Normalize x, y
+    this.x = this.x / image_width;
+    this.y = this.y / image_height;
+
+    //Normalize w, h
+    this.w = this.w / image_width;
+    this.h = this.h / image_height;
   }
 
 

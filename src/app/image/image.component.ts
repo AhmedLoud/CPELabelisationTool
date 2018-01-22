@@ -79,7 +79,6 @@ export class ImageComponent implements OnInit {
    */
   loadCanvasContext(): void {
     this.context = this.imageCanvas.nativeElement.getContext("2d");
-
   }
 
   adaptCanvasToLoadedImage(): void {
@@ -195,6 +194,9 @@ export class ImageComponent implements OnInit {
   }
 
   onLabeliseImage(): void {
+    this.image.boundingBoxes.forEach(box => {
+      box.normalize(this.canvasImage.width, this.canvasImage.height);
+    });
     this.imageService.updateImage(this.image).subscribe(response => {
       this.isDrawingBoundingBox = false;
       this.imageService.getImageToLabelise().subscribe((image: ImageToLabelise) => {
