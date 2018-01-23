@@ -4,13 +4,39 @@
     <div class="col">
       <canvas #imageCanvas [hidden]="!image"></canvas>
     </div>
-    <div class="col">
-      <app-labelisation-form  *ngIf="image"
-                              (labelSelected)="startDrawingBoundingBox($event)"
-                              (save)="saveDrawnBoundingBox()"
-                              (cancel)="cancelDrawnBoundingBox()"
-                              [createdboundingBoxes]="image.boundingBoxes"
-                              (labeliseImage)="onLabeliseImage()"></app-labelisation-form>
+    <div class="col" *ngIf="image">
+      <h1>Labels</h1>
+      <p class="text-muted">Here is the list of labels available in the image
+        To labelise the image plese select a category and click
+        on the add button.
+        When you finish drawing the bounding box arround the element click save
+      </p>
+      <div class="form-inline">
+        <div class="form-inline" *ngIf="selectedLabel">
+          <label for="categories">select category</label>
+          <select class="form-control" 
+                  id="categories" 
+                  [(ngModel)]="selectedLabel"
+                  (change)="onChangeLabel()">
+            <option *ngFor="let label of labels" [ngValue]="label">{{label.name}}</option>
+          </select>
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-success" (click)="onClickSave()">
+            <i class="fa fa-check"></i>
+          </button>
+        </div>
+      </div>
+      <div class="created-bounding-boxs">
+        <ul class="bounding-boxs-list list-group">
+          <li *ngFor="let box of image.boundingBoxes"
+              class="list-group-item"
+              (click)="onClickBoxItem(box)"
+              [class.active]="isBoxSelected(box)">{{box.label.name}}</li>
+        </ul>
+      </div>
+      <button class="btn btn-success"
+              (click)="onLabeliseImage()">Labelise this image</button>
     </div>
   </div>
   <!-- End of This section is displayed when an image is loaded from the server  -->

@@ -9,7 +9,6 @@ import { AppRoutingModule } from './/app-routing.module';
 /*Component*/
 import { AppComponent } from './app.component';
 import { ImageComponent } from './image/image.component';
-import { LabelisationFormComponent } from './labelisation-form/labelisation-form.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AdminComponent } from './admin/admin.component';
 import { DarknetTrainingComponent } from './admin/darknet-training/darknet-training.component';
@@ -26,7 +25,6 @@ import { DarknetTrainingService } from './services/darknet-training.service';
   declarations: [
     AppComponent,
     ImageComponent,
-    LabelisationFormComponent,
     NavbarComponent,
     AdminComponent,
     DarknetTrainingComponent,
