@@ -1,3 +1,22 @@
-<p>
-  labels works!
-</p>
+<h1>Labels manager</h1>
+<div class="row">
+  <div class="col-md-5 col-sm-12">
+    <form class="form-inline">
+      <label class="sr-only" for="inlineFormInputName2">Label Name:</label>
+      <input type="text" #labelName class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" placeholder="exemple: can">
+      <button (click)="addLabel(labelName.value); labelName.value=''" class="btn btn-primary mb-2">add</button>
+    </form>
+    <ul class="list-group mb-2" (mouseleave)="hoverIndex=null;">
+      <li *ngFor="let label of labels; let i=index" 
+          class="list-group-item"
+          (mouseenter)="hoverIndex=i;">{{label.name}}
+        <div class="action-buttons" *ngIf="i==hoverIndex">
+          <button class="btn btn-sm btn-danger" 
+                  (click)="onDeleteLabel(label)">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

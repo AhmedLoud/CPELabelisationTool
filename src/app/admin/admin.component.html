@@ -1,5 +1,4 @@
 <div id="wrapper" [class.toggled]="sidebarToogled">
-
   <!-- Sidebar -->
   <div id="sidebar-wrapper">
     <ul class="sidebar-nav">
@@ -9,18 +8,23 @@
       <li>
         <a routerLink="/admin/darknet-training-create">Create training</a>
       </li>
+      <li>
+          <a routerLink="/admin/labels">Labels</a>
+        </li>
     </ul>
   </div>
   <!-- /#sidebar-wrapper -->
 
   <!-- Page Content -->
   <div id="page-content-wrapper">
+    <div>
+      <button class="btn btn-outline-info" id="menu-toggle" (click)="onClickToogleSidebar()">
+          <i class="fa fa-plus" *ngIf="!sidebarToogled"></i>
+          <i class="fa fa-minus" *ngIf="sidebarToogled"></i>
+      </button>
+    </div>
     <div class="container-fluid">
       <router-outlet></router-outlet>
-      <button class="btn btn-outline-info" id="menu-toggle" (click)="onClickToogleSidebar()">
-      <i class="fa fa-plus" *ngIf="!sidebarToogled"></i>
-      <i class="fa fa-minus" *ngIf="sidebarToogled"></i>
-      </button>
     </div>
   </div>
   <!-- /#page-content-wrapper -->
