@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { AppRoutingModule } from './/app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 
 /*Component*/
 import { AppComponent } from './app.component';
@@ -20,6 +20,7 @@ import { LabelService } from './services/label.service';
 import { SettingsService } from './services/settings.service';
 import { ImageService } from './services/image.service';
 import { DarknetTrainingService } from './services/darknet-training.service';
+import { LabelsComponent } from './admin/labels/labels.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { DarknetTrainingService } from './services/darknet-training.service';
     AdminComponent,
     DarknetTrainingComponent,
     DarknetTrainingDetailComponent,
-    DarknetTrainingCreateComponent
+    DarknetTrainingCreateComponent,
+    LabelsComponent
   ],
   imports: [
     BrowserModule,

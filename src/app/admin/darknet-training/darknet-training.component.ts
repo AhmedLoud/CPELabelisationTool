@@ -44,4 +44,35 @@ export class DarknetTrainingComponent implements OnInit {
     }
   }
 
+  onTrainDarknetTraining(darknetTraining: DarknetTraining): void {
+    let copy = Object.assign({}, darknetTraining);
+    copy.is_training = true;
+    this.darknetTrainingService.updateDarknetTraining(copy)
+      .subscribe(darknetTraining => {
+        this.darknetTrainings = this.darknetTrainings.map(dt => {
+          if (dt.id == darknetTraining.id)
+            return darknetTraining
+          else
+            return dt;
+        })
+      });
+  }
+
+  onStopDarknetTraining(darknetTraining: DarknetTraining): void {
+    let copy = Object.assign({}, darknetTraining);
+    copy.is_training = false;
+    this.darknetTrainingService.updateDarknetTraining(copy)
+      .subscribe(darknetTraining => {
+        this.darknetTrainings = this.darknetTrainings.map(dt => {
+          if (dt.id == darknetTraining.id)
+            return darknetTraining
+          else
+            return dt;
+        })
+      });
+  }
+
+  canTrain(): boolean {
+    return !this.darknetTrainings.find(dt => dt.is_training);
+  }
 }

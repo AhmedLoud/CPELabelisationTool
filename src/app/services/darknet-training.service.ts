@@ -49,4 +49,14 @@ export class DarknetTrainingService {
     const url: string = this.settingsService.backendApiUrl + `/darknet_trainings/${id}`;
     return this.http.delete<DarknetTraining>(url, httpOptions);
   }
+
+  updateDarknetTraining(darknetTraining: DarknetTraining): Observable<any> {
+    const id: number = darknetTraining.id;
+    const url: string = this.settingsService.backendApiUrl + `/darknet_trainings/${id}`;
+    return this.http.put<DarknetTraining>(url,
+      DarknetTraining.toJSON(darknetTraining), httpOptions);
+  }
+
+
+
 }

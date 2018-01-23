@@ -22,7 +22,8 @@ export class DarknetTraining {
     return {
       darknet_training: {
         title: darknetTraining.title,
-        description: darknetTraining.description
+        description: darknetTraining.description,
+        is_training: darknetTraining.is_training
       },
       labels: darknetTraining.labels
     }

@@ -6,10 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
-
+  sidebarToogled: boolean = true;
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onClickToogleSidebar(): void {
+    this.sidebarToogled = !this.sidebarToogled;
   }
 
 }

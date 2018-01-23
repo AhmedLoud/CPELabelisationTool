@@ -1,6 +1,8 @@
 <div class="top-bar">
+  <h1>Manage Darknet Trainings
   <button class="btn btn-success rounded-circle"
   routerLink='/admin/darknet-training-create'><i class="fa fa-plus"></i></button>
+</h1>
 </div>
 <div class="row card-group">
   <div class="col-md-4" *ngFor="let darknetTraining of darknetTrainings">
@@ -15,12 +17,18 @@
       </div>
       <div class="card-body">
         <p class="card-text">{{darknetTraining.description}}</p>
-        <button *ngIf="!darknetTraining.is_training" 
-                class="btn btn-sm btn-success">train</button>
-      <span *ngIf="darknetTraining.is_training">
-        <i class="fa fa-spinner fa-spin"></i>
-        currently training
-      </span>
+        <button *ngIf="canTrain()" 
+                class="btn btn-sm btn-success"
+                (click)="onTrainDarknetTraining(darknetTraining)"
+                >train</button>
+        <div *ngIf="darknetTraining.is_training">
+          <span>
+            <i class="fa fa-spinner fa-spin"></i>
+            currently training
+          </span>
+          <button class="btn btn-danger btn-sm" 
+                  (click)="onStopDarknetTraining(darknetTraining)">stop</button>
+        </div>
       </div>
     </div>
   </div>
