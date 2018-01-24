@@ -26,7 +26,7 @@ export class ImageComponent implements OnInit {
   context: CanvasRenderingContext2D;
   canvasImage;
 
-  labels: Label[];
+  labels: Label[] = [];
   selectedBox: BoundingBox;
   selectedLabel: Label;
 
@@ -112,6 +112,7 @@ export class ImageComponent implements OnInit {
   ngAfterViewInit(): void {
     this.imageService.getImageToLabelise().subscribe((image: ImageToLabelise) => {
       this.image = image;
+      this.image.boundingBoxes = [];
       this.loadCanvasContext();
       if (this.image) {
         this.adaptCanvasToLoadedImage();
