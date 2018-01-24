@@ -15,30 +15,26 @@ const httpOptions = {
 export class LoginService {
   private backendUrl = 'http://localhost:3000/ping';
   private _isBackendApiAvailable: boolean;
-  private alive: boolean;
   private interval: number;
 
   constructor(private http: HttpClient,
     private settingsService: SettingsService) {
     this._isBackendApiAvailable = false;
-    this.alive = true;
     this.interval = 10000;
-    console.log("HSKLDJFLSKJDFLKJSADFLKSJDH")
+    this.pingBackend();
+  }
+
+  pingBackend(): void {
     TimerObservable.create(0, this.interval)
-      .takeWhile(() => this.alive)
+      .takeWhile(() => !this._isBackendApiAvailable)
       .subscribe(() => {
         this.ping().subscribe(result => {
           if (result == "pong") {
             this._isBackendApiAvailable = true;
           }
-          else {
-            this._isBackendApiAvailable = false;
-          }
         });
       });
-
   }
-
 
 
 
