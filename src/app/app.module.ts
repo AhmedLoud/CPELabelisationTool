@@ -14,13 +14,14 @@ import { AdminComponent } from './admin/admin.component';
 import { DarknetTrainingComponent } from './admin/darknet-training/darknet-training.component';
 import { DarknetTrainingDetailComponent } from './admin/darknet-training/darknet-training-detail/darknet-training-detail.component';
 import { DarknetTrainingCreateComponent } from './admin/darknet-training/darknet-training-create/darknet-training-create.component';
+import { LabelsComponent } from './admin/labels/labels.component';
 
 /*Services*/
 import { LabelService } from './services/label.service';
 import { SettingsService } from './services/settings.service';
 import { ImageService } from './services/image.service';
 import { DarknetTrainingService } from './services/darknet-training.service';
-import { LabelsComponent } from './admin/labels/labels.component';
+import { LoginService } from './services/login.service';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,11 @@ import { LabelsComponent } from './admin/labels/labels.component';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [LabelService, SettingsService, ImageService, DarknetTrainingService],
+  providers: [LabelService,
+    SettingsService,
+    ImageService,
+    DarknetTrainingService,
+    LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
