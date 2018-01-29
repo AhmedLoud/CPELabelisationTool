@@ -231,12 +231,16 @@ export class ImageComponent implements OnInit {
 
   getBoxListColor(box: BoundingBox): string {
     if (this.isBoxSelected(box)) {
-      const boundingBox: BoundingBox = this.image.boundingBoxes.find(b => b == box);
+      const boundingBox: BoundingBox = this.image.boundingBoxes.find(b => b === box);
       return boundingBox.color;
     }
     else {
       return '#FFF';
     }
+  }
+
+  onDeleteBox(box: BoundingBox): void {
+    this.image.boundingBoxes = this.image.boundingBoxes.filter(b => b !== box);
   }
 
 }

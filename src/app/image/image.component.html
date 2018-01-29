@@ -30,12 +30,21 @@
         </div>
       </div>
       <div class="created-bounding-boxs">
-        <ul class="bounding-boxs-list list-group">
-          <li *ngFor="let box of image.boundingBoxes"
+        <ul class="bounding-boxs-list list-group"
+            (mouseleave)="hoverIndex=null">
+          <li *ngFor="let box of image.boundingBoxes; let i=index"
               class="list-group-item"
+              (mouseenter)="hoverIndex=i"
               (click)="onClickBoxItem(box)"
               [style.backgroundColor]="getBoxListColor(box)"
-              [class.active]="isBoxSelected(box)">{{box.label.name}}</li>
+              [class.active]="isBoxSelected(box)">{{box.label.name}}
+            <div class="crud-action-buttons" *ngIf="i==hoverIndex">
+                <button class="btn btn-sm btn-danger" 
+                        (click)="onDeleteBox(box)">
+                  <i class="fa fa-times"></i>
+                </button>
+            </div>
+          </li>
         </ul>
       </div>
       <button class="btn btn-success"

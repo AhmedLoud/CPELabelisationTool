@@ -32,3 +32,9 @@ p {
 .bounding-boxs-list .list-group-item.active {
   border: none;
 }
+
+.crud-action-buttons {
+  position: absolute;
+  right: 8px;
+  top: 9px;
+}
