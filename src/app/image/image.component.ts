@@ -3,7 +3,6 @@ import { ImageToLabelise, BoundingBox, Label, Utilities } from '../models/index'
 import { ImageService } from '../services/image.service';
 import { Router } from '@angular/router'
 import { LabelService } from '../services/label.service';
-import { LoginService } from '../services/login.service';
 
 class MousePos {
   x: number;
@@ -34,7 +33,7 @@ export class ImageComponent implements OnInit {
 
   @ViewChild("imageCanvas") imageCanvas: ElementRef;
   constructor(private imageService: ImageService, private labelService: LabelService,
-    private router: Router, private loginService: LoginService) {
+    private router: Router) {
   }
 
   getLabels(): void {

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SettingsService } from './settings.service';
+import { LoginService } from './login.service';
 
 export const LABELS: Label[] = [
   { id: 1, name: 'boisson' },
@@ -22,11 +23,17 @@ export class LabelService {
   private backendUrl = 'http://localhost:3000/ping';
 
   constructor(private http: HttpClient,
-    private settingsService: SettingsService) { }
+    private settingsService: SettingsService,
+    private loginService: LoginService) { }
 
   getLabels(): Observable<Label[]> {
     const url = this.settingsService.backendApiUrl + '/labels';
-    return this.http.get<Label[]>(url);
+    if (this.loginService.isConnectedToBackend) {
+      return this.http.get<Label[]>(url);
+    }
+    else {
+      return of(LABELS);
+    }
   }
 
   ping(): Observable<string> {
@@ -41,6 +48,11 @@ export class LabelService {
 
   createLabel(label: Label): Observable<Label> {
     const url: string = this.settingsService.backendApiUrl + '/labels';
-    return this.http.post<Label>(url, label, httpOptions);
+    if (this.loginService.isConnectedToBackend) {
+      return this.http.post<Label>(url, label, httpOptions);
+    }
+    else {
+      return of(label);
+    }
   }
 }
