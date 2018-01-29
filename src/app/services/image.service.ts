@@ -27,10 +27,7 @@ export class ImageService {
       return this.http.get<ImageToLabelise>(url);
     }
     else {
-      const img = new ImageToLabelise();
-      img.imageUrl = 'assets/imageTest.jpg';
-      img.boundingBoxes = [];
-      return of(img);
+      return of(this.getDefaultImage());
     }
   }
 
@@ -38,6 +35,18 @@ export class ImageService {
   updateImage(image: ImageToLabelise): Observable<any> {
     const url = this.settingsService.backendApiUrl
       + '/images/' + image.id
-    return this.http.put(url, ImageToLabelise.toJSON(image), httpOptions);
+    if (this.loginService.isConnectedToBackend) {
+      return this.http.put(url, ImageToLabelise.toJSON(image), httpOptions);
+    }
+    else {
+      return of(this.getDefaultImage());
+    }
+  }
+
+  private getDefaultImage(): ImageToLabelise {
+    const img = new ImageToLabelise();
+    img.imageUrl = 'assets/imageTest.jpg';
+    img.boundingBoxes = [];
+    return img;
   }
 }

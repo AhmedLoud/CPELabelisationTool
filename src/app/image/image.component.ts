@@ -32,8 +32,38 @@ export class ImageComponent implements OnInit {
 
 
   @ViewChild("imageCanvas") imageCanvas: ElementRef;
-  constructor(private imageService: ImageService, private labelService: LabelService,
+  constructor(private imageService: ImageService,
+    private labelService: LabelService,
     private router: Router) {
+  }
+
+  ngAfterViewInit(): void {
+    this.loadCanvasContext();
+    this.addEventListeners();
+    if (this.image) {
+      this.adaptCanvasToLoadedImage();
+    }
+  }
+
+  ngOnInit(): void {
+    this.getLabels();
+    this.getRandomImageToLabelise();
+    setInterval(() => {
+      if (this.context && this.canvasImage) {
+        this.drawboundingBoxes(this.canvasImage, this.context);
+      }
+    });
+  }
+
+  getRandomImageToLabelise(): void {
+    this.imageService.getImageToLabelise().subscribe((image: ImageToLabelise) => {
+      this.image = image;
+      this.image.boundingBoxes = [];
+
+    }, (error) => {
+      console.log('error happened');
+
+    });
   }
 
   getLabels(): void {
@@ -46,18 +76,6 @@ export class ImageComponent implements OnInit {
 
   onChangeLabel(): void {
     this.currentBoundingBox.label = this.selectedLabel;
-  }
-
-  ngOnInit(): void {
-    this.getLabels();
-    setInterval(() => {
-      if (this.context && this.canvasImage) {
-        this.drawboundingBoxes(this.canvasImage, this.context);
-
-      }
-    });
-    this.addEventListeners();
-
   }
 
   addEventListeners(): void {
@@ -108,25 +126,6 @@ export class ImageComponent implements OnInit {
       this.context.canvas.height = this.canvasImage.height;
       this.context.canvas.width = this.canvasImage.width;
     };
-  }
-
-
-
-  ngAfterViewInit(): void {
-    this.imageService.getImageToLabelise().subscribe((image: ImageToLabelise) => {
-      this.image = image;
-      this.image.boundingBoxes = [];
-      this.loadCanvasContext();
-      if (this.image) {
-        this.adaptCanvasToLoadedImage();
-      }
-
-
-    }, (error) => {
-      console.log('error happened');
-
-    });
-
   }
 
   @HostListener('mouseup', ['$event'])
