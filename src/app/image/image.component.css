@@ -25,6 +25,6 @@ p {
   cursor: pointer;
 }
 
-.action-buttons {
-  margin-right: 2px;
+#labelise-button {
+  margin-top: 10px;
 }
