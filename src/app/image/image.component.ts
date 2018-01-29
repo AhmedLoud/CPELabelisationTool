@@ -119,7 +119,6 @@ export class ImageComponent implements OnInit {
   }
 
   adaptCanvasToLoadedImage(): void {
-    this.nextBoundingBoxLocalId = 0;
     this.canvasImage = new Image();
     this.canvasImage.src = this.image.imageUrl;
     this.canvasImage.onload = () => {
@@ -228,5 +227,14 @@ export class ImageComponent implements OnInit {
     return box.id == this.selectedBox.id;
   }
 
+  getBoxListColor(box: BoundingBox): string {
+    if (this.isBoxSelected(box)) {
+      const boundingBox: BoundingBox = this.image.boundingBoxes.find(b => b == box);
+      return boundingBox.color;
+    }
+    else {
+      return '#FFF';
+    }
+  }
 
 }

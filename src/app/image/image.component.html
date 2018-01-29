@@ -32,6 +32,7 @@
           <li *ngFor="let box of image.boundingBoxes"
               class="list-group-item"
               (click)="onClickBoxItem(box)"
+              [style.backgroundColor]="getBoxListColor(box)"
               [class.active]="isBoxSelected(box)">{{box.label.name}}</li>
         </ul>
       </div>

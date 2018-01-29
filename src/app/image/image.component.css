@@ -28,3 +28,7 @@ p {
 #labelise-button {
   margin-top: 10px;
 }
+
+.bounding-boxs-list .list-group-item.active {
+  border: none;
+}
