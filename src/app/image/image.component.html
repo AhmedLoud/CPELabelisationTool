@@ -22,7 +22,9 @@
           </select>
         </div>
         <div class="action-buttons">
-          <button class="btn btn-success" (click)="onClickSave()">
+          <button class="btn btn-success" 
+                  (click)="onClickSave()"
+                  [disabled]="currentBoundingBox.w == 0 || currentBoundingBox.h == 0">
             <i class="fa fa-check"></i>
           </button>
         </div>

@@ -194,6 +194,8 @@ export class ImageComponent implements OnInit {
   }
 
   onClickSave(): void {
+    if (this.currentBoundingBox.w == 0 || this.currentBoundingBox.h == 0)
+      return;
     this.image.boundingBoxes.push(this.currentBoundingBox);
     this.initializeCurrentBoundingBox();
   }
