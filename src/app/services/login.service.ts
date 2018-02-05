@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SettingsService } from './settings.service';
 import 'rxjs/add/operator/takeWhile';
 import { of } from 'rxjs/observable/of';
+import { catchError } from 'rxjs/operators/catchError';
 
 
 const httpOptions = {
@@ -20,30 +21,32 @@ export class LoginService {
   constructor(private http: HttpClient,
     private settingsService: SettingsService) {
     this._isBackendApiAvailable = false;
-    this.interval = 10000;
-    this.pingBackend();
+    this.interval = 0;
+    // this.pingBackend();
+    console.log('constructor', this._isBackendApiAvailable);
   }
 
   pingBackend(): void {
-    TimerObservable.create(0, this.interval)
-      .takeWhile(() => !this._isBackendApiAvailable)
-      .subscribe(() => {
-        this.ping().subscribe(result => {
-          if (result == "pong") {
-            this._isBackendApiAvailable = true;
-          }
-        });
-      });
+    // TimerObservable.create(0, this.interval)
+    //   .takeWhile(() => !this._isBackendApiAvailable)
+    //   .subscribe(() => {
+    //     this.ping().subscribe(result => {
+    //       console.log('result', result)
+    //       if (result.message == "pong") {
+    //         this._isBackendApiAvailable = true;
+    //       }
+    //     });
+    //   });
   }
 
 
 
   ping(): Observable<string> {
-    return this.http.get<string>(this.backendUrl)
-      .pipe(() => {
+    return this.http.get<string>('http://localhost:3000/ping')
+      .pipe(catchError(() => {
         this._isBackendApiAvailable = false;
         return of('' as string);
-      }
+      })
       );
   }
 

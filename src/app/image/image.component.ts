@@ -40,14 +40,12 @@ export class ImageComponent implements OnInit {
   ngAfterViewInit(): void {
     this.loadCanvasContext();
     this.addEventListeners();
-    if (this.image) {
-      this.adaptCanvasToLoadedImage();
-    }
+    this.getRandomImageToLabelise();
+
   }
 
   ngOnInit(): void {
     this.getLabels();
-    this.getRandomImageToLabelise();
     setInterval(() => {
       if (this.context && this.canvasImage) {
         this.drawboundingBoxes(this.canvasImage, this.context);
@@ -59,7 +57,9 @@ export class ImageComponent implements OnInit {
     this.imageService.getImageToLabelise().subscribe((image: ImageToLabelise) => {
       this.image = image;
       this.image.boundingBoxes = [];
-
+      if (this.image) {
+        this.adaptCanvasToLoadedImage();
+      }
     }, (error) => {
       console.log('error happened');
 
@@ -121,6 +121,7 @@ export class ImageComponent implements OnInit {
   adaptCanvasToLoadedImage(): void {
     this.canvasImage = new Image();
     this.canvasImage.src = this.image.imageUrl;
+    console.log('canvasImageUrl')
     this.canvasImage.onload = () => {
       this.context.canvas.height = this.canvasImage.height;
       this.context.canvas.width = this.canvasImage.width;
