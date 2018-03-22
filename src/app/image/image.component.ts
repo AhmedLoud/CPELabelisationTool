@@ -58,6 +58,7 @@ export class ImageComponent implements OnInit {
     setInterval(() => {
       console.log('selectedBoundingBox', this.selectedBox);
       console.log('currentBoundingBox', this.currentBoundingBox);
+      console.log('image bounding boxes', this.image.boundingBoxes)
     }, 1000);
     /**
      * Remove me to this line
@@ -183,9 +184,10 @@ export class ImageComponent implements OnInit {
           context.strokeStyle = box.color;
           context.strokeRect(box.x, box.y,
             box.w, box.h);
-            if(box.id === this.selectedBox.id){
-              // context.ellipse(box.x,box.y,0.2,)
-            }
+
+          if (this.selectedBox && box.id === this.selectedBox.id) {
+            // context.ellipse(box.x,box.y,0.2,)
+          }
         });
       }
     }
