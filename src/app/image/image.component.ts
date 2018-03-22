@@ -52,10 +52,16 @@ export class ImageComponent implements OnInit {
       }
     });
 
+    /**
+     * TODO remove me
+     */
     setInterval(() => {
       console.log('selectedBoundingBox', this.selectedBox);
       console.log('currentBoundingBox', this.currentBoundingBox);
     }, 1000);
+    /**
+     * Remove me to this line
+     */
   }
 
   getRandomImageToLabelise(): void {
