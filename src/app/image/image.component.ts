@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
-import { ImageToLabelise, BoundingBox, Label, Utilities } from '../models/index'
+import { ImageToLabelise, BoundingBox, Label, Utilities, Vec2 } from '../models/index'
 import { ImageService } from '../services/image.service';
 import { Router } from '@angular/router'
 import { LabelService } from '../services/label.service';
@@ -25,16 +25,25 @@ export class ImageComponent implements OnInit {
   nextBoundingBoxLocalId: number = 0;
   context: CanvasRenderingContext2D;
   canvasImage;
+  selectableEdgesRadius: number = 5; // radius of the tool to modify a bounding box
 
   labels: Label[] = [];
   selectedBox: BoundingBox;
   selectedLabel: Label;
-
+  /* when bounding boxes selected this circles appear to adjust the shape of the 
+    bounding Box. The first element of the array is the top border. The rest of the
+    controllers are in order looping from left to right*/
+  shapeControllers: Vec2[] = [];
 
   @ViewChild("imageCanvas") imageCanvas: ElementRef;
+
   constructor(private imageService: ImageService,
     private labelService: LabelService,
     private router: Router) {
+    this.shapeControllers.push(new Vec2());
+    this.shapeControllers.push(new Vec2());
+    this.shapeControllers.push(new Vec2());
+    this.shapeControllers.push(new Vec2());
   }
 
   ngAfterViewInit(): void {
@@ -51,18 +60,6 @@ export class ImageComponent implements OnInit {
         this.drawboundingBoxes(this.canvasImage, this.context);
       }
     });
-
-    /**
-     * TODO remove me
-     */
-    setInterval(() => {
-      console.log('selectedBoundingBox', this.selectedBox);
-      console.log('currentBoundingBox', this.currentBoundingBox);
-      console.log('image bounding boxes', this.image.boundingBoxes)
-    }, 1000);
-    /**
-     * Remove me to this line
-     */
   }
 
   getRandomImageToLabelise(): void {
@@ -104,7 +101,6 @@ export class ImageComponent implements OnInit {
           this.currentBoundingBox.w = 0;
           this.currentBoundingBox.h = 0;
         }
-        console.log('(', pos.x, ',', pos.y, ')');
       }
 
     });
@@ -133,7 +129,6 @@ export class ImageComponent implements OnInit {
   adaptCanvasToLoadedImage(): void {
     this.canvasImage = new Image();
     this.canvasImage.src = this.image.imageUrl;
-    console.log('canvasImageUrl')
     this.canvasImage.onload = () => {
       this.context.canvas.height = this.canvasImage.height;
       this.context.canvas.width = this.canvasImage.width;
@@ -174,19 +169,20 @@ export class ImageComponent implements OnInit {
     //clear canvas
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
-
     if (this.image) {
       //draw image to labelise
       context.drawImage(image, 0, 0);
       if (this.image.boundingBoxes) {
+
         //Draw all the bounding boxes associated to the image
         this.image.boundingBoxes.forEach(box => {
           context.strokeStyle = box.color;
           context.strokeRect(box.x, box.y,
             box.w, box.h);
 
+          //Draw tool circles to modify selected Bounding box
           if (this.selectedBox && box.id === this.selectedBox.id) {
-            // context.ellipse(box.x,box.y,0.2,)
+            this.drawShapeControllers(context);
           }
         });
       }
@@ -200,6 +196,17 @@ export class ImageComponent implements OnInit {
       context.strokeRect(this.currentBoundingBox.x, this.currentBoundingBox.y,
         this.currentBoundingBox.w, this.currentBoundingBox.h);
     }
+  }
+
+  drawShapeControllers(context: CanvasRenderingContext2D): void {
+    this.adjustShapeControllers();
+    this.shapeControllers.forEach((controller: Vec2) => {
+      context.beginPath();
+      context.arc(controller.x, controller.y,
+        this.selectableEdgesRadius, 0, 2 * Math.PI);
+      context.strokeStyle = "#FFFFFF";
+      context.stroke();
+    });
   }
 
   initializeCurrentBoundingBox(): void {
@@ -258,6 +265,26 @@ export class ImageComponent implements OnInit {
 
   onDeleteBox(box: BoundingBox): void {
     this.image.boundingBoxes = this.image.boundingBoxes.filter(b => b !== box);
+  }
+
+
+  adjustShapeControllers() {
+    //Top edge
+    this.shapeControllers[0].x = this.selectedBox.x + this.selectedBox.w / 2;
+    this.shapeControllers[0].y = this.selectedBox.y;
+
+    //right edge
+    this.shapeControllers[1].x = this.selectedBox.x + this.selectedBox.w;
+    this.shapeControllers[1].y = this.selectedBox.y + this.selectedBox.h / 2;
+
+    //bottom edge
+    this.shapeControllers[2].x = this.selectedBox.x + this.selectedBox.w / 2;
+    this.shapeControllers[2].y = this.selectedBox.y + this.selectedBox.h;
+
+    //left edge
+    this.shapeControllers[3].x = this.selectedBox.x;
+    this.shapeControllers[3].y = this.selectedBox.y + this.selectedBox.h / 2;
+
   }
 
 }

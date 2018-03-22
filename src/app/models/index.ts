@@ -3,3 +3,4 @@ export * from './image-to-labelise';
 export * from './label';
 export * from './utilities';
 export * from './darknet-training';
+export * from './math/vec2';

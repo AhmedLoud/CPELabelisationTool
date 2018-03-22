@@ -1,4 +1,5 @@
 import { Label } from './index';
+
 export class BoundingBox {
   x: number;
   y: number;
@@ -7,6 +8,7 @@ export class BoundingBox {
   color: string;
   label: Label
   id: number;
+
 
   constructor() {
     this.w = 0;
@@ -26,6 +28,9 @@ export class BoundingBox {
   static fromJSON(b) {
 
   }
+
+
+
 
   normalize(image_width: number, image_height: number): void {
     //(x,y) moved to center of bounding box
