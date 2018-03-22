@@ -53,6 +53,11 @@ export class ImageComponent implements OnInit {
         this.drawboundingBoxes(this.canvasImage, this.context);
       }
     });
+
+    setInterval(() => {
+      console.log('selectedBoundingBox', this.selectedBox);
+      console.log('currentBoundingBox', this.currentBoundingBox);
+    }, 1000);
   }
 
   getRandomImageToLabelise(): void {
@@ -171,6 +176,9 @@ export class ImageComponent implements OnInit {
           context.strokeStyle = box.color;
           context.strokeRect(box.x, box.y,
             box.w, box.h);
+            if(box.id === this.selectedBox.id){
+              // context.ellipse(box.x,box.y,0.2,)
+            }
         });
       }
     }
