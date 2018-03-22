@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import { ImageToLabelise } from '../models/index';
 import { catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
-import { LoginService } from './login.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -15,32 +14,21 @@ export class ImageService {
 
 
   constructor(private settingsService: SettingsService,
-    private http: HttpClient,
-    private loginService: LoginService) {
+    private http: HttpClient) {
   }
 
   /**GET: get a random image from the server */
   getImageToLabelise(): Observable<ImageToLabelise> {
     const url = this.settingsService.backendApiUrl +
       '/random_image_to_labelise';
-    if (this.loginService.isConnectedToBackend) {
-      return this.http.get<ImageToLabelise>(url);
-    }
-    else {
-      return of(this.getDefaultImage());
-    }
+    return this.http.get<ImageToLabelise>(url);
   }
 
   /**PUT: update the image on the server */
   updateImage(image: ImageToLabelise): Observable<any> {
     const url = this.settingsService.backendApiUrl
       + '/images/' + image.id
-    if (this.loginService.isConnectedToBackend) {
-      return this.http.put(url, ImageToLabelise.toJSON(image), httpOptions);
-    }
-    else {
-      return of(this.getDefaultImage());
-    }
+    return this.http.put(url, ImageToLabelise.toJSON(image), httpOptions);
   }
 
   private getDefaultImage(): ImageToLabelise {
