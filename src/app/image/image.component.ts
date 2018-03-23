@@ -50,7 +50,6 @@ export class ImageComponent implements OnInit {
     this.loadCanvasContext();
     this.addEventListeners();
     this.getRandomImageToLabelise();
-
   }
 
   ngOnInit(): void {
@@ -87,13 +86,24 @@ export class ImageComponent implements OnInit {
     this.currentBoundingBox.label = this.selectedLabel;
   }
 
+  shouldUnselectSelectedBox(mousePosition): boolean {
+    if (!this.selectedBox) {
+      return false;
+    }
+    const isClickInsideSelectedBox: boolean = mousePosition.x >= this.selectedBox.x
+      && mousePosition.x <= this.selectedBox.x + this.selectedBox.w
+      && mousePosition.y >= this.selectedBox.y
+      && mousePosition.y <= this.selectedBox.y + this.selectedBox.h;
+    return !this.isDrawingBoundingBox && !isClickInsideSelectedBox;
+  }
+
   addEventListeners(): void {
     /*
     Event Listener when mouse is down on the HTML canvas
      */
     this.imageCanvas.nativeElement.addEventListener('mousedown', (event: MouseEvent) => {
-      if (!this.isDrawingBoundingBox) {
-        const pos = this.getMousePos(event);
+      const pos = this.getMousePos(event);
+      if (!this.isDrawingBoundingBox && !this.selectedBox) {
         this.isDrawingBoundingBox = true;
         if (this.currentBoundingBox) {
           this.currentBoundingBox.x = pos.x;
@@ -101,6 +111,9 @@ export class ImageComponent implements OnInit {
           this.currentBoundingBox.w = 0;
           this.currentBoundingBox.h = 0;
         }
+      }
+      if (this.shouldUnselectSelectedBox(pos)) {
+        this.selectedBox = null;
       }
 
     });
@@ -244,6 +257,8 @@ export class ImageComponent implements OnInit {
 
   onClickBoxItem(box: BoundingBox): void {
     this.selectedBox = box;
+    this.isDrawingBoundingBox = false;
+    this.initializeCurrentBoundingBox();
   }
 
   isBoxSelected(box: BoundingBox): boolean {
