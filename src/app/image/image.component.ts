@@ -22,6 +22,7 @@ export class ImageComponent implements OnInit {
 
   currentBoundingBox: BoundingBox;
   isDrawingBoundingBox: boolean;
+  isReshapingSelectedBoundingBox: boolean;
   nextBoundingBoxLocalId: number = 0;
   context: CanvasRenderingContext2D;
   canvasImage;
@@ -86,7 +87,7 @@ export class ImageComponent implements OnInit {
     this.currentBoundingBox.label = this.selectedLabel;
   }
 
-  shouldUnselectSelectedBox(mousePosition): boolean {
+  shouldUnselectSelectedBox(mousePosition: MousePos): boolean {
     if (!this.selectedBox) {
       return false;
     }
@@ -96,6 +97,14 @@ export class ImageComponent implements OnInit {
       && mousePosition.y >= this.selectedBox.y - offset
       && mousePosition.y <= this.selectedBox.y + this.selectedBox.h + offset;
     return !this.isDrawingBoundingBox && !isClickInsideSelectedBox;
+  }
+
+  clickedShapeController(mousePosition: MousePos): Vec2 {
+    const shapeController = this.shapeControllers.find((controller: Vec2) => {
+      const distance = controller.distanceToOtherVec2(new Vec2(mousePosition.x, mousePosition.y));
+      return distance <= this.selectableEdgesRadius;
+    });
+    return shapeController;
   }
 
   addEventListeners(): void {
@@ -117,6 +126,10 @@ export class ImageComponent implements OnInit {
         this.selectedBox = null;
       }
 
+      if (!this.isDrawingBoundingBox && this.selectedBox) {
+        console.log('shapeController', this.clickedShapeController(pos));
+      }
+
     });
 
     this.imageCanvas.nativeElement.addEventListener('mousemove', (event: MouseEvent) => {
@@ -127,7 +140,7 @@ export class ImageComponent implements OnInit {
           this.currentBoundingBox.h = Math.abs(pos.y - this.currentBoundingBox.y);
         }
       }
-      
+
     });
   }
 
