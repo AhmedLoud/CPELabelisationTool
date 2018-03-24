@@ -90,10 +90,11 @@ export class ImageComponent implements OnInit {
     if (!this.selectedBox) {
       return false;
     }
-    const isClickInsideSelectedBox: boolean = mousePosition.x >= this.selectedBox.x
-      && mousePosition.x <= this.selectedBox.x + this.selectedBox.w
-      && mousePosition.y >= this.selectedBox.y
-      && mousePosition.y <= this.selectedBox.y + this.selectedBox.h;
+    const offset = 5;
+    const isClickInsideSelectedBox: boolean = mousePosition.x >= this.selectedBox.x - offset
+      && mousePosition.x <= this.selectedBox.x + this.selectedBox.w + offset
+      && mousePosition.y >= this.selectedBox.y - offset
+      && mousePosition.y <= this.selectedBox.y + this.selectedBox.h + offset;
     return !this.isDrawingBoundingBox && !isClickInsideSelectedBox;
   }
 
@@ -119,13 +120,14 @@ export class ImageComponent implements OnInit {
     });
 
     this.imageCanvas.nativeElement.addEventListener('mousemove', (event: MouseEvent) => {
+      const pos = this.getMousePos(event);
       if (this.isDrawingBoundingBox) {
-        const pos = this.getMousePos(event);
         if (this.currentBoundingBox) {
           this.currentBoundingBox.w = Math.abs(pos.x - this.currentBoundingBox.x);
           this.currentBoundingBox.h = Math.abs(pos.y - this.currentBoundingBox.y);
         }
       }
+      
     });
   }
 
