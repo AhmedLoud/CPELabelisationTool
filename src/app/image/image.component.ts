@@ -35,6 +35,7 @@ export class ImageComponent implements OnInit {
     bounding Box. The first element of the array is the top border. The rest of the
     controllers are in order looping from left to right*/
   shapeControllers: Vec2[] = [];
+  clickedShapeController: Vec2;
 
   @ViewChild("imageCanvas") imageCanvas: ElementRef;
 
@@ -99,7 +100,15 @@ export class ImageComponent implements OnInit {
     return !this.isDrawingBoundingBox && !isClickInsideSelectedBox;
   }
 
-  clickedShapeController(mousePosition: MousePos): Vec2 {
+  /**
+   * Function clickedShapeController
+   * *******************************
+   * Uses a mousePosition to see if it's in a shapeController
+   * return the shapeController if the mousePosition is inside this controller
+   * returns NULL if nothing is found
+   * @param mousePosition 
+   */
+  getClickedShapeController(mousePosition: MousePos): Vec2 {
     const shapeController = this.shapeControllers.find((controller: Vec2) => {
       const distance = controller.distanceToOtherVec2(new Vec2(mousePosition.x, mousePosition.y));
       return distance <= this.selectableEdgesRadius;
@@ -127,21 +136,37 @@ export class ImageComponent implements OnInit {
       }
 
       if (!this.isDrawingBoundingBox && this.selectedBox) {
-        console.log('shapeController', this.clickedShapeController(pos));
+        //Look if the user clicked on a controller
+        this.clickedShapeController = this.getClickedShapeController(pos);
+        if (this.clickedShapeController) {
+          this.isReshapingSelectedBoundingBox = true;
+        }
       }
 
     });
 
     this.imageCanvas.nativeElement.addEventListener('mousemove', (event: MouseEvent) => {
       const pos = this.getMousePos(event);
+
+      /* If the user is drawing a bounding box we need to change the width and
+      height of the current bounding box */
       if (this.isDrawingBoundingBox) {
         if (this.currentBoundingBox) {
           this.currentBoundingBox.w = Math.abs(pos.x - this.currentBoundingBox.x);
           this.currentBoundingBox.h = Math.abs(pos.y - this.currentBoundingBox.y);
         }
       }
-
+      /* If the user is reshaping a bounding box we need to change the shape
+      of the bounding box according to the movement of the mouse */
+      if(this.isReshapingSelectedBoundingBox){
+        this.reshapeSelectedBoundingBox()
+      }
     });
+  }
+
+  reshapeSelectedBoundingBox(shapeController: Vec2): void {
+    const controllerPosition: number = this.shapeControllers.indexOf(shapeController);
+    console.log('index',controllerPosition);
   }
 
   /**
@@ -167,6 +192,10 @@ export class ImageComponent implements OnInit {
   onMouseup() {
     if (this.isDrawingBoundingBox) {
       this.isDrawingBoundingBox = false;
+    }
+    if (this.isReshapingSelectedBoundingBox) {
+      this.isReshapingSelectedBoundingBox = false;
+      this.
     }
   }
 
