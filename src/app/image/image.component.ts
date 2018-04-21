@@ -1,7 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
-import { ImageToLabelise, BoundingBox, Label, Utilities, Vec2 } from '../models/index'
+import {
+  Component, OnInit, ViewChild, ElementRef, HostListener,
+  AfterViewInit
+} from '@angular/core';
+import { ImageToLabelise, BoundingBox, Label, Utilities, Vec2 } from '../models/index';
 import { ImageService } from '../services/image.service';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
 import { LabelService } from '../services/label.service';
 
 class MousePos {
@@ -16,17 +19,17 @@ class MousePos {
 })
 
 
-export class ImageComponent implements OnInit {
+export class ImageComponent implements OnInit, AfterViewInit {
 
   image: ImageToLabelise;
 
   currentBoundingBox: BoundingBox;
   isDrawingBoundingBox: boolean;
   isReshapingSelectedBoundingBox: boolean;
-  nextBoundingBoxLocalId: number = 0;
+  nextBoundingBoxLocalId = 0;
   context: CanvasRenderingContext2D;
   canvasImage;
-  selectableEdgesRadius: number = 5; // radius of the tool to modify a bounding box
+  selectableEdgesRadius = 5; // radius of the tool to modify a bounding box
 
   labels: Label[] = [];
   selectedBox: BoundingBox;
@@ -37,7 +40,7 @@ export class ImageComponent implements OnInit {
   shapeControllers: Vec2[] = [];
   clickedShapeController: Vec2;
 
-  @ViewChild("imageCanvas") imageCanvas: ElementRef;
+  @ViewChild('imageCanvas') imageCanvas: ElementRef;
 
   constructor(private imageService: ImageService,
     private labelService: LabelService,
@@ -106,7 +109,7 @@ export class ImageComponent implements OnInit {
    * Uses a mousePosition to see if it's in a shapeController
    * return the shapeController if the mousePosition is inside this controller
    * returns NULL if nothing is found
-   * @param mousePosition 
+   * @param mousePosition
    */
   getClickedShapeController(mousePosition: MousePos): Vec2 {
     const shapeController = this.shapeControllers.find((controller: Vec2) => {
@@ -136,7 +139,7 @@ export class ImageComponent implements OnInit {
       }
 
       if (!this.isDrawingBoundingBox && this.selectedBox) {
-        //Look if the user clicked on a controller
+        // Look if the user clicked on a controller
         this.clickedShapeController = this.getClickedShapeController(pos);
         if (this.clickedShapeController) {
           this.isReshapingSelectedBoundingBox = true;
@@ -158,25 +161,24 @@ export class ImageComponent implements OnInit {
       }
       /* If the user is reshaping a bounding box we need to change the shape
       of the bounding box according to the movement of the mouse */
-      if(this.isReshapingSelectedBoundingBox){
-        this.reshapeSelectedBoundingBox()
+      if (this.isReshapingSelectedBoundingBox) {
+        // this.reshapeSelectedBoundingBox()
       }
     });
   }
 
   reshapeSelectedBoundingBox(shapeController: Vec2): void {
     const controllerPosition: number = this.shapeControllers.indexOf(shapeController);
-    console.log('index',controllerPosition);
+    console.log('index', controllerPosition);
   }
 
   /**
    * Function load Canvas Context
    * *****************************
    * Load the canvas context
-   * 
    */
   loadCanvasContext(): void {
-    this.context = this.imageCanvas.nativeElement.getContext("2d");
+    this.context = this.imageCanvas.nativeElement.getContext('2d');
   }
 
   adaptCanvasToLoadedImage(): void {
@@ -195,7 +197,7 @@ export class ImageComponent implements OnInit {
     }
     if (this.isReshapingSelectedBoundingBox) {
       this.isReshapingSelectedBoundingBox = false;
-      this.
+      // this.
     }
   }
 
@@ -203,12 +205,12 @@ export class ImageComponent implements OnInit {
    * Function getMousePos
    * **********************
    * Return the relative coordinate of a mouse event in the HTML canvas
-   * @param event 
+   * @param event
    */
   getMousePos(event: MouseEvent): MousePos {
-    let rect = this.imageCanvas.nativeElement.getBoundingClientRect();
-    let x = event.clientX - rect.left;
-    let y = event.clientY - rect.top;
+    const rect = this.imageCanvas.nativeElement.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
     const pos: MousePos = new MousePos();
     pos.x = x;
     pos.y = y;
@@ -219,25 +221,25 @@ export class ImageComponent implements OnInit {
    * Function drawBoundingBox
    * ************************
    * Called to draw the currentBoundingBox in the canvas
-   * @param image background image 
+   * @param image background image
    * @param context canvasContext
    */
   drawboundingBoxes(image, context: CanvasRenderingContext2D): void {
-    //clear canvas
+    // clear canvas
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
     if (this.image) {
-      //draw image to labelise
+      // draw image to labelise
       context.drawImage(image, 0, 0);
       if (this.image.boundingBoxes) {
 
-        //Draw all the bounding boxes associated to the image
+        // Draw all the bounding boxes associated to the image
         this.image.boundingBoxes.forEach(box => {
           context.strokeStyle = box.color;
           context.strokeRect(box.x, box.y,
             box.w, box.h);
 
-          //Draw tool circles to modify selected Bounding box
+          // Draw tool circles to modify selected Bounding box
           if (this.selectedBox && box.id === this.selectedBox.id) {
             this.drawShapeControllers(context);
           }
@@ -245,11 +247,11 @@ export class ImageComponent implements OnInit {
       }
     }
 
-    //Draw current bounding box
+    // Draw current bounding box
     if (this.currentBoundingBox) {
       context.strokeStyle = this.currentBoundingBox.color;
       context.shadowBlur = 100;
-      context.shadowColor = "blue";
+      context.shadowColor = 'blue';
       context.strokeRect(this.currentBoundingBox.x, this.currentBoundingBox.y,
         this.currentBoundingBox.w, this.currentBoundingBox.h);
     }
@@ -261,7 +263,7 @@ export class ImageComponent implements OnInit {
       context.beginPath();
       context.arc(controller.x, controller.y,
         this.selectableEdgesRadius, 0, 2 * Math.PI);
-      context.strokeStyle = "#FFFFFF";
+      context.strokeStyle = '#FFFFFF';
       context.stroke();
     });
   }
@@ -275,8 +277,9 @@ export class ImageComponent implements OnInit {
   }
 
   onClickSave(): void {
-    if (this.currentBoundingBox.w == 0 || this.currentBoundingBox.h == 0)
+    if (this.currentBoundingBox.w === 0 || this.currentBoundingBox.h === 0) {
       return;
+    }
     this.image.boundingBoxes.push(this.currentBoundingBox);
     this.initializeCurrentBoundingBox();
   }
@@ -296,7 +299,7 @@ export class ImageComponent implements OnInit {
         }
       }, (error) => {
       });
-    })
+    });
   }
 
   onClickBoxItem(box: BoundingBox): void {
@@ -309,15 +312,14 @@ export class ImageComponent implements OnInit {
     if (!this.selectedBox) {
       return false;
     }
-    return box.id == this.selectedBox.id;
+    return box.id === this.selectedBox.id;
   }
 
   getBoxListColor(box: BoundingBox): string {
     if (this.isBoxSelected(box)) {
       const boundingBox: BoundingBox = this.image.boundingBoxes.find(b => b === box);
       return boundingBox.color;
-    }
-    else {
+    } else {
       return '#FFF';
     }
   }
@@ -328,19 +330,19 @@ export class ImageComponent implements OnInit {
 
 
   adjustShapeControllers() {
-    //Top edge
+    // Top edge
     this.shapeControllers[0].x = this.selectedBox.x + this.selectedBox.w / 2;
     this.shapeControllers[0].y = this.selectedBox.y;
 
-    //right edge
+    // right edge
     this.shapeControllers[1].x = this.selectedBox.x + this.selectedBox.w;
     this.shapeControllers[1].y = this.selectedBox.y + this.selectedBox.h / 2;
 
-    //bottom edge
+    // bottom edge
     this.shapeControllers[2].x = this.selectedBox.x + this.selectedBox.w / 2;
     this.shapeControllers[2].y = this.selectedBox.y + this.selectedBox.h;
 
-    //left edge
+    // left edge
     this.shapeControllers[3].x = this.selectedBox.x;
     this.shapeControllers[3].y = this.selectedBox.y + this.selectedBox.h / 2;
 
