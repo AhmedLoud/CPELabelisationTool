@@ -8,7 +8,7 @@ import { of } from 'rxjs/observable/of';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-}
+};
 @Injectable()
 export class ImageService {
 
@@ -27,7 +27,7 @@ export class ImageService {
   /**PUT: update the image on the server */
   updateImage(image: ImageToLabelise): Observable<any> {
     const url = this.settingsService.backendApiUrl
-      + '/images/' + image.id
+      + '/images/' + image.id;
     return this.http.put(url, ImageToLabelise.toJSON(image), httpOptions);
   }
 

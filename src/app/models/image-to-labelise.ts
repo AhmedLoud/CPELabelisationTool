@@ -1,6 +1,6 @@
-import { BoundingBox } from './index';
+import { BoundingBox } from './bounding-box';
 export class ImageToLabelise {
-  id: number
+  id: number;
   imageUrl: string;
   boundingBoxes: BoundingBox[];
 
@@ -9,6 +9,6 @@ export class ImageToLabelise {
       image: {
         bounding_boxes: image.boundingBoxes.map(b => BoundingBox.toJSON(b))
       }
-    }
+    };
   }
 }
