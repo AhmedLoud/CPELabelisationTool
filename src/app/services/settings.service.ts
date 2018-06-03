@@ -6,7 +6,7 @@ export class SettingsService {
   private _currentApiVersion;
 
   constructor() {
-    this._backendUrl = 'http://localhost:3000';
+    this._backendUrl = 'http://production.mc2qvjnhp3.us-east-1.elasticbeanstalk.com/';
     this._currentApiVersion = 1;
   }
 
