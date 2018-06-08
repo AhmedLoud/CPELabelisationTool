@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { TimerObservable } from "rxjs/observable/TimerObservable";
+import { Observable ,  of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SettingsService } from './settings.service';
-import 'rxjs/add/operator/takeWhile';
-import { of } from 'rxjs/observable/of';
-import { catchError } from 'rxjs/operators/catchError';
+import { catchError } from 'rxjs/operators';
 
 
 const httpOptions = {
